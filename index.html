@@ -1,617 +1,676 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Uxaoro · Social network</title>
-<style>
-/* ---------- GLOBAL ---------- */
-* {
-margin: 0;
-padding: 0;
-box-sizing: border-box;
-font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Uxaoro · Social network</title>
+  <style>
+    /* ---------- GLOBAL ---------- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    }
 
-:root {
-/* light theme (default) */
---bg: #ffffff;
---surface: rgba(245, 245, 247, 0.72);
---glass: rgba(255, 255, 255, 0.65);
---border: rgba(0, 0, 0, 0.08);
---text-primary: #0a0a0a;
---text-secondary: #4a4a4a;
---accent: #2b6cff;
---accent-soft: #d9e5ff;
---shadow: 0 8px 32px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
---radius-card: 24px;
---radius-sm: 16px;
---logo-filter: none;
---logo-dark-display: none;
-}
+    :root {
+      /* light theme (default) */
+      --bg: #ffffff;
+      --surface: rgba(245, 245, 247, 0.72);
+      --glass: rgba(255, 255, 255, 0.65);
+      --border: rgba(0, 0, 0, 0.08);
+      --text-primary: #0a0a0a;
+      --text-secondary: #4a4a4a;
+      --accent: #2b6cff;
+      --accent-soft: #d9e5ff;
+      --accent-hover: #1a5ae0;
+      --shadow: 0 8px 32px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+      --radius-card: 24px;
+      --radius-sm: 16px;
+      --logo-filter: none;
+      --logo-dark-display: none;
+    }
 
-@media (prefers-color-scheme: dark) {
-:root {
---bg: #000000;
---surface: rgba(28, 28, 30, 0.72);
---glass: rgba(20, 20, 22, 0.7);
---border: rgba(255, 255, 255, 0.08);
---text-primary: #f5f5f7;
---text-secondary: #a1a1a6;
---accent: #5e8bff;
---accent-soft: #1a2a4a;
---shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(0, 0, 0, 0.3);
---logo-filter: brightness(0) invert(1);
---logo-dark-display: inline;
-}
-}
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #000000;
+        --surface: rgba(28, 28, 30, 0.72);
+        --glass: rgba(20, 20, 22, 0.7);
+        --border: rgba(255, 255, 255, 0.08);
+        --text-primary: #f5f5f7;
+        --text-secondary: #a1a1a6;
+        --accent: #5e8bff;
+        --accent-soft: #1a2a4a;
+        --accent-hover: #7aa2ff;
+        --shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(0, 0, 0, 0.3);
+        --logo-filter: brightness(0) invert(1);
+        --logo-dark-display: inline;
+      }
+    }
 
-body {
-background: var(--bg);
-color: var(--text-primary);
-line-height: 1.5;
--webkit-font-smoothing: antialiased;
-min-height: 100vh;
-display: flex;
-flex-direction: column;
-}
+    body {
+      background: var(--bg);
+      color: var(--text-primary);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
 
-.container {
-max-width: 1120px;
-margin: 0 auto;
-padding: 0 24px;
-width: 100%;
-}
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 24px;
+      width: 100%;
+    }
 
-/* ---------- GLASS CARD ---------- */
-.glass {
-background: var(--glass);
-backdrop-filter: blur(14px);
--webkit-backdrop-filter: blur(14px);
-border: 1px solid var(--border);
-border-radius: var(--radius-card);
-box-shadow: var(--shadow);
-transition: background 0.2s, border-color 0.2s;
-}
+    /* ---------- GLASS CARD ---------- */
+    .glass {
+      background: var(--glass);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow);
+      transition: background 0.2s, border-color 0.2s;
+    }
 
-/* ---------- HEADER ---------- */
-header {
-padding: 20px 0;
-display: flex;
-align-items: center;
-justify-content: space-between;
-flex-wrap: wrap;
-gap: 16px;
-}
+    /* ---------- HEADER ---------- */
+    header {
+      padding: 20px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
 
-.logo-group {
-display: flex;
-align-items: center;
-gap: 12px;
-}
+    .logo-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
 
-.logo-group .studio-logo {
-display: flex;
-align-items: center;
-gap: 8px;
-opacity: 0.8;
-transition: opacity 0.2s;
-}
+    .logo-group .studio-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+    }
 
-.logo-group .studio-logo:hover {
-opacity: 1;
-}
+    .logo-group .studio-logo:hover {
+      opacity: 1;
+    }
 
-.studio-logo img {
-height: 32px;
-width: auto;
-display: block;
-}
+    .studio-logo img {
+      height: 32px;
+      width: auto;
+      display: block;
+    }
 
-.studio-logo .light-logo {
-display: block;
-}
-.studio-logo .dark-logo {
-display: none;
-}
+    .studio-logo .light-logo {
+      display: block;
+    }
+    .studio-logo .dark-logo {
+      display: none;
+    }
 
-@media (prefers-color-scheme: dark) {
-.studio-logo .light-logo {
-display: none;
-}
-.studio-logo .dark-logo {
-display: block;
-}
-}
+    @media (prefers-color-scheme: dark) {
+      .studio-logo .light-logo {
+        display: none;
+      }
+      .studio-logo .dark-logo {
+        display: block;
+      }
+    }
 
-.uxaoro-logo img {
-height: 40px;
-width: auto;
-display: block;
-}
+    .uxaoro-logo img {
+      height: 40px;
+      width: auto;
+      display: block;
+    }
 
-.uxaoro-logo .light-logo {
-display: block;
-}
-.uxaoro-logo .dark-logo {
-display: none;
-}
+    .uxaoro-logo .light-logo {
+      display: block;
+    }
+    .uxaoro-logo .dark-logo {
+      display: none;
+    }
 
-@media (prefers-color-scheme: dark) {
-.uxaoro-logo .light-logo {
-display: none;
-}
-.uxaoro-logo .dark-logo {
-display: block;
-}
-}
+    @media (prefers-color-scheme: dark) {
+      .uxaoro-logo .light-logo {
+        display: none;
+      }
+      .uxaoro-logo .dark-logo {
+        display: block;
+      }
+    }
 
-/* ---------- TYPOGRAPHY ---------- */
-h1 {
-font-size: clamp(2.4rem, 6vw, 4rem);
-font-weight: 700;
-letter-spacing: -0.02em;
-line-height: 1.2;
-}
+    /* ---------- TYPOGRAPHY ---------- */
+    h1 {
+      font-size: clamp(2.4rem, 6vw, 4rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
 
-h2 {
-font-size: 2rem;
-font-weight: 600;
-letter-spacing: -0.01em;
-margin-bottom: 24px;
-}
+    h2 {
+      font-size: 2rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-bottom: 24px;
+    }
 
-.subhead {
-font-size: 1.25rem;
-color: var(--text-secondary);
-max-width: 720px;
-}
+    .subhead {
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      max-width: 720px;
+    }
 
-/* ---------- HERO ---------- */
-.hero {
-padding: 40px 0 60px;
-display: flex;
-flex-direction: column;
-gap: 32px;
-}
+    /* ---------- HERO ---------- */
+    .hero {
+      padding: 40px 0 60px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
 
-.hero-content {
-display: flex;
-flex-wrap: wrap;
-justify-content: space-between;
-align-items: center;
-gap: 40px;
-}
+    .hero-content {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 40px;
+    }
 
-.hero-text {
-flex: 1 1 380px;
-}
+    .hero-text {
+      flex: 1 1 380px;
+    }
 
-.hero-text .subhead {
-margin-top: 16px;
-}
+    .hero-text .subhead {
+      margin-top: 16px;
+    }
 
-/* ---------- COUNTDOWN ---------- */
-.countdown-card {
-flex: 0 1 380px;
-padding: 32px 28px;
-text-align: center;
-}
+    /* ---------- PRE-REGISTRATION BUTTON ---------- */
+    .preregister-wrap {
+      margin-top: 28px;
+    }
 
-.countdown-label {
-font-size: 0.875rem;
-text-transform: uppercase;
-letter-spacing: 0.08em;
-color: var(--text-secondary);
-margin-bottom: 8px;
-}
+    .btn-preregister {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 32px;
+      border-radius: 100px;
+      background: var(--accent);
+      color: #ffffff;
+      font-size: 1.05rem;
+      font-weight: 600;
+      text-decoration: none;
+      letter-spacing: -0.01em;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(43, 108, 255, 0.35);
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    }
 
-.countdown-title {
-font-size: 1.25rem;
-font-weight: 600;
-margin-bottom: 24px;
-}
+    .btn-preregister:hover {
+      background: var(--accent-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(43, 108, 255, 0.45);
+    }
 
-.timer {
-display: flex;
-justify-content: center;
-gap: 12px;
-margin-bottom: 8px;
-flex-wrap: wrap;
-}
+    .btn-preregister:active {
+      transform: translateY(0);
+    }
 
-.timer-segment {
-display: flex;
-flex-direction: column;
-align-items: center;
-min-width: 70px;
-}
+    .btn-preregister .arrow {
+      font-size: 1.15rem;
+      line-height: 1;
+      transition: transform 0.2s;
+    }
 
-.timer-value {
-font-size: 2.4rem;
-font-weight: 700;
-font-variant-numeric: tabular-nums;
-line-height: 1.1;
-color: var(--text-primary);
-}
+    .btn-preregister:hover .arrow {
+      transform: translateX(3px);
+    }
 
-.timer-unit {
-font-size: 0.75rem;
-text-transform: uppercase;
-letter-spacing: 0.06em;
-color: var(--text-secondary);
-margin-top: 6px;
-}
+    /* ---------- COUNTDOWN ---------- */
+    .countdown-card {
+      flex: 0 1 380px;
+      padding: 32px 28px;
+      text-align: center;
+    }
 
-.beta-date {
-margin-top: 20px;
-font-size: 0.95rem;
-color: var(--text-secondary);
-}
+    .countdown-label {
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
 
-.beta-date strong {
-color: var(--text-primary);
-font-weight: 600;
-}
+    .countdown-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 24px;
+    }
 
-/* ---------- SECTION ---------- */
-section {
-padding: 60px 0;
-border-top: 1px solid var(--border);
-}
+    .timer {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
 
-.section-title {
-margin-bottom: 40px;
-}
+    .timer-segment {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 70px;
+    }
 
-.feature-grid {
-display: grid;
-grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-gap: 20px;
-}
+    .timer-value {
+      font-size: 2.4rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      line-height: 1.1;
+      color: var(--text-primary);
+    }
 
-.feature-card {
-padding: 28px 24px;
-border-radius: var(--radius-sm);
-background: var(--surface);
-backdrop-filter: blur(8px);
--webkit-backdrop-filter: blur(8px);
-border: 1px solid var(--border);
-box-shadow: var(--shadow);
-transition: transform 0.2s ease, background 0.2s;
-}
+    .timer-unit {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-secondary);
+      margin-top: 6px;
+    }
 
-.feature-card:hover {
-transform: translateY(-2px);
-}
+    .beta-date {
+      margin-top: 20px;
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+    }
 
-.feature-card h3 {
-font-size: 1.15rem;
-font-weight: 600;
-margin-bottom: 8px;
-letter-spacing: -0.01em;
-}
+    .beta-date strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
 
-.feature-card p {
-font-size: 0.95rem;
-color: var(--text-secondary);
-line-height: 1.6;
-}
+    /* ---------- SECTION ---------- */
+    section {
+      padding: 60px 0;
+      border-top: 1px solid var(--border);
+    }
 
-.feature-icon {
-font-size: 1.8rem;
-margin-bottom: 16px;
-display: block;
-}
+    .section-title {
+      margin-bottom: 40px;
+    }
 
-/* ---------- PLATFORMS ---------- */
-.platforms {
-display: flex;
-flex-wrap: wrap;
-gap: 12px;
-margin-top: 8px;
-}
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
 
-.platform-badge {
-padding: 10px 20px;
-border-radius: 100px;
-background: var(--surface);
-border: 1px solid var(--border);
-font-size: 0.9rem;
-font-weight: 500;
-color: var(--text-secondary);
-backdrop-filter: blur(8px);
--webkit-backdrop-filter: blur(8px);
-}
+    .feature-card {
+      padding: 28px 24px;
+      border-radius: var(--radius-sm);
+      background: var(--surface);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      transition: transform 0.2s ease, background 0.2s;
+    }
 
-/* ---------- FOOTER ---------- */
-footer {
-margin-top: auto;
-padding: 40px 0 32px;
-border-top: 1px solid var(--border);
-display: flex;
-flex-wrap: wrap;
-justify-content: space-between;
-align-items: center;
-gap: 20px;
-color: var(--text-secondary);
-font-size: 0.9rem;
-}
+    .feature-card:hover {
+      transform: translateY(-2px);
+    }
 
-.footer-studio {
-display: flex;
-align-items: center;
-gap: 10px;
-}
+    .feature-card h3 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
 
-.footer-studio img {
-height: 24px;
-width: auto;
-display: block;
-}
+    .feature-card p {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
 
-.footer-studio .light-logo {
-display: block;
-}
-.footer-studio .dark-logo {
-display: none;
-}
+    .feature-icon {
+      font-size: 1.8rem;
+      margin-bottom: 16px;
+      display: block;
+    }
 
-@media (prefers-color-scheme: dark) {
-.footer-studio .light-logo {
-display: none;
-}
-.footer-studio .dark-logo {
-display: block;
-}
-}
+    /* ---------- PLATFORMS ---------- */
+    .platforms {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 8px;
+    }
 
-.footer-links {
-display: flex;
-gap: 24px;
-}
+    .platform-badge {
+      padding: 10px 20px;
+      border-radius: 100px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
 
-.footer-links a {
-color: var(--text-secondary);
-text-decoration: none;
-transition: color 0.2s;
-}
+    /* ---------- FOOTER ---------- */
+    footer {
+      margin-top: auto;
+      padding: 40px 0 32px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
 
-.footer-links a:hover {
-color: var(--text-primary);
-}
+    .footer-studio {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-/* ---------- RESPONSIVE ---------- */
-@media (max-width: 640px) {
-.hero-content {
-flex-direction: column;
-align-items: stretch;
-}
+    .footer-studio img {
+      height: 24px;
+      width: auto;
+      display: block;
+    }
 
-.countdown-card {
-flex: 1 1 auto;
-}
+    .footer-studio .light-logo {
+      display: block;
+    }
+    .footer-studio .dark-logo {
+      display: none;
+    }
 
-.timer-value {
-font-size: 1.8rem;
-}
+    @media (prefers-color-scheme: dark) {
+      .footer-studio .light-logo {
+        display: none;
+      }
+      .footer-studio .dark-logo {
+        display: block;
+      }
+    }
 
-.timer-segment {
-min-width: 56px;
-}
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
 
-header {
-flex-direction: column;
-align-items: flex-start;
-}
+    .footer-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
 
-.logo-group {
-flex-wrap: wrap;
-}
+    .footer-links a:hover {
+      color: var(--text-primary);
+    }
 
-footer {
-flex-direction: column;
-align-items: flex-start;
-}
-}
-</style>
+    /* ---------- RESPONSIVE ---------- */
+    @media (max-width: 640px) {
+      .hero-content {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .countdown-card {
+        flex: 1 1 auto;
+      }
+
+      .timer-value {
+        font-size: 1.8rem;
+      }
+
+      .timer-segment {
+        min-width: 56px;
+      }
+
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .logo-group {
+        flex-wrap: wrap;
+      }
+
+      footer {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .btn-preregister {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
 </head>
 <body>
-<div class="container">
-<!-- HEADER -->
-<header>
-<div class="logo-group">
-<!-- Uxaoro logo -->
-<div class="uxaoro-logo">
-<img src="logo.png" alt="Uxaoro" class="light-logo">
-<img src="dlogo.png" alt="Uxaoro" class="dark-logo">
-</div>
-<!-- Studio logo -->
-<div class="studio-logo">
-<img src="https://fourtexec.site/logo.png" alt="Fourtexec" class="light-logo">
-<img src="https://fourtexec.site/dlogo.png" alt="Fourtexec" class="dark-logo">
-</div>
-</div>
-<div class="platforms">
-<span class="platform-badge">Android</span>
-<span class="platform-badge">Web</span>
-<span class="platform-badge">Desktop</span>
-</div>
-</header>
+  <div class="container">
+    <!-- HEADER -->
+    <header>
+      <div class="logo-group">
+        <!-- Uxaoro logo -->
+        <div class="uxaoro-logo">
+          <img src="logo.png" alt="Uxaoro" class="light-logo">
+          <img src="dlogo.png" alt="Uxaoro" class="dark-logo">
+        </div>
+        <!-- Studio logo -->
+        <div class="studio-logo">
+          <img src="https://fourtexec.site/logo.png" alt="Fourtexec" class="light-logo">
+          <img src="https://fourtexec.site/dlogo.png" alt="Fourtexec" class="dark-logo">
+        </div>
+      </div>
+      <div class="platforms">
+        <span class="platform-badge">Android</span>
+        <span class="platform-badge">Web</span>
+        <span class="platform-badge">Desktop</span>
+      </div>
+    </header>
 
-<!-- HERO + COUNTDOWN -->
-<div class="hero">
-<div class="hero-content">
-<div class="hero-text">
-<h1>Uxaoro</h1>
-<p class="subhead">
-A social network built for real connection. Share moments, chat securely,
-and stay close to the people who matter — across every device.
-</p>
-<div class="platforms" style="margin-top: 24px;">
-<span class="platform-badge">Liquid glass UI</span>
-<span class="platform-badge">End-to-end encrypted chats</span>
-<span class="platform-badge">Audio & video calls</span>
-</div>
-</div>
+    <!-- HERO + COUNTDOWN -->
+    <div class="hero">
+      <div class="hero-content">
+        <div class="hero-text">
+          <h1>Uxaoro</h1>
+          <p class="subhead">
+            A social network built for real connection. Share moments, chat securely, 
+            and stay close to the people who matter — across every device.
+          </p>
 
-<div class="countdown-card glass">
-<div class="countdown-label">Beta testing starts</div>
-<div class="countdown-title">October 10 · 12:00 UTC</div>
-<div class="timer" id="countdown">
-<div class="timer-segment">
-<span class="timer-value" id="days">00</span>
-<span class="timer-unit">days</span>
-</div>
-<div class="timer-segment">
-<span class="timer-value" id="hours">00</span>
-<span class="timer-unit">hours</span>
-</div>
-<div class="timer-segment">
-<span class="timer-value" id="minutes">00</span>
-<span class="timer-unit">min</span>
-</div>
-<div class="timer-segment">
-<span class="timer-value" id="seconds">00</span>
-<span class="timer-unit">sec</span>
-</div>
-</div>
-<div class="beta-date" id="betaMessage">
-Beta opens on <strong>October 10, 12:00 UTC</strong>
-</div>
-</div>
-</div>
-</div>
+          <!-- PRE-REGISTRATION BUTTON -->
+          <div class="preregister-wrap">
+            <a href="https://uxaoro.fourtexec.site/preregistration" class="btn-preregister" target="_blank" rel="noopener">
+              Pre-register now
+              <span class="arrow">→</span>
+            </a>
+          </div>
 
-<!-- FEATURES -->
-<section>
-<div class="section-title">
-<h2>What you get</h2>
-</div>
-<div class="feature-grid">
-<div class="feature-card">
-<span class="feature-icon">👤</span>
-<h3>Profiles & social graph</h3>
-<p>Register, customize your profile with avatar, cover, bio, status and city. Find friends by username and build your circle.</p>
-</div>
-<div class="feature-card">
-<span class="feature-icon">📰</span>
-<h3>Feed & posts</h3>
-<p>Ranked feed with text and images. Like, comment, repost, react with emojis, and save posts for later.</p>
-</div>
-<div class="feature-card">
-<span class="feature-icon">📸</span>
-<h3>Stories</h3>
-<p>Share 24-hour photo stories with friends. See what they're up to, right now.</p>
-</div>
-<div class="feature-card">
-<span class="feature-icon">💬</span>
-<h3>Messages & group chats</h3>
-<p>Direct messages and group chats with end-to-end encryption. Pin, mute, unsend, draft, react, search — all there.</p>
-</div>
-<div class="feature-card">
-<span class="feature-icon">📞</span>
-<h3>Audio & video calls</h3>
-<p>One-on-one calls with WebRTC. Clear audio, smooth video, right inside the app.</p>
-</div>
-<div class="feature-card">
-<span class="feature-icon">🌐</span>
-<h3>Communities</h3>
-<p>Create or join communities with their own roles, posting permissions, and invite links.</p>
-</div>
-<div class="feature-card">
-<span class="feature-icon">💎</span>
-<h3>UX currency</h3>
-<p>Earn UX for activity, gift it to friends, or buy it via Telegram bot. Admins can grant or deduct from the control panel.</p>
-</div>
-<div class="feature-card">
-<span class="feature-icon">🔐</span>
-<h3>E2EE everywhere</h3>
-<p>Chat messages and attachments are encrypted end-to-end. The server never sees your private conversations.</p>
-</div>
-</div>
-</section>
+          <div class="platforms" style="margin-top: 24px;">
+            <span class="platform-badge">Liquid glass UI</span>
+            <span class="platform-badge">End-to-end encrypted chats</span>
+            <span class="platform-badge">Audio & video calls</span>
+          </div>
+        </div>
 
-<!-- PLATFORMS DETAIL -->
-<section>
-<div class="section-title">
-<h2>Everywhere you are</h2>
-</div>
-<div class="feature-grid">
-<div class="feature-card">
-<h3>Android</h3>
-<p>Native Kotlin / Jetpack Compose app. Liquid glass UI, E2EE, calls, stories, and the full social experience.</p>
-</div>
-<div class="feature-card">
-<h3>Web</h3>
-<p>Full-featured SPA served by the API or hosted on GitHub Pages. Same features as Android, right in your browser.</p>
-</div>
-<div class="feature-card">
-<h3>Desktop</h3>
-<p>Tauri, Electron, and Python/Qt clients for Windows, Linux, and macOS. All wrap the same web experience.</p>
-</div>
-</div>
-</section>
+        <div class="countdown-card glass">
+          <div class="countdown-label">Beta testing starts</div>
+          <div class="countdown-title">October 10 · 12:00 UTC</div>
+          <div class="timer" id="countdown">
+            <div class="timer-segment">
+              <span class="timer-value" id="days">00</span>
+              <span class="timer-unit">days</span>
+            </div>
+            <div class="timer-segment">
+              <span class="timer-value" id="hours">00</span>
+              <span class="timer-unit">hours</span>
+            </div>
+            <div class="timer-segment">
+              <span class="timer-value" id="minutes">00</span>
+              <span class="timer-unit">min</span>
+            </div>
+            <div class="timer-segment">
+              <span class="timer-value" id="seconds">00</span>
+              <span class="timer-unit">sec</span>
+            </div>
+          </div>
+          <div class="beta-date" id="betaMessage">
+            Beta opens on <strong>October 10, 12:00 UTC</strong>
+          </div>
+        </div>
+      </div>
+    </div>
 
-<!-- FOOTER -->
-<footer>
-<div class="footer-studio">
-<span>Built by</span>
-<img src="https://fourtexec.site/logo.png" alt="Fourtexec" class="light-logo">
-<img src="https://fourtexec.site/dlogo.png" alt="Fourtexec" class="dark-logo">
-</div>
-<div class="footer-links">
-<a href="https://api.uxaoro.fourtexec.site" target="_blank" rel="noopener">API</a>
-<a href="https://api.uxaoro.fourtexec.site/docs" target="_blank" rel="noopener">Docs</a>
-</div>
-<div>© 2026 Uxaoro</div>
-</footer>
-</div>
+    <!-- FEATURES -->
+    <section>
+      <div class="section-title">
+        <h2>What you get</h2>
+      </div>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <span class="feature-icon">👤</span>
+          <h3>Profiles & social graph</h3>
+          <p>Register, customize your profile with avatar, cover, bio, status and city. Find friends by username and build your circle.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">📰</span>
+          <h3>Feed & posts</h3>
+          <p>Ranked feed with text and images. Like, comment, repost, react with emojis, and save posts for later.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">📸</span>
+          <h3>Stories</h3>
+          <p>Share 24-hour photo stories with friends. See what they're up to, right now.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">💬</span>
+          <h3>Messages & group chats</h3>
+          <p>Direct messages and group chats with end-to-end encryption. Pin, mute, unsend, draft, react, search — all there.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">📞</span>
+          <h3>Audio & video calls</h3>
+          <p>One-on-one calls with WebRTC. Clear audio, smooth video, right inside the app.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🌐</span>
+          <h3>Communities</h3>
+          <p>Create or join communities with their own roles, posting permissions, and invite links.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">💎</span>
+          <h3>UX currency</h3>
+          <p>Earn UX for activity, gift it to friends, or buy it via Telegram bot. Admins can grant or deduct from the control panel.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🔐</span>
+          <h3>E2EE everywhere</h3>
+          <p>Chat messages and attachments are encrypted end-to-end. The server never sees your private conversations.</p>
+        </div>
+      </div>
+    </section>
 
-<script>
-(function() {
-// Target: October 10, 12:00 UTC — adjust year if needed.
-// Using current year (2026) based on context.
-const targetDate = new Date(Date.UTC(2026, 9, 10, 12, 0, 0)); // month 9 = October
+    <!-- PLATFORMS DETAIL -->
+    <section>
+      <div class="section-title">
+        <h2>Everywhere you are</h2>
+      </div>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <h3>Android</h3>
+          <p>Native Kotlin / Jetpack Compose app. Liquid glass UI, E2EE, calls, stories, and the full social experience.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Web</h3>
+          <p>Full-featured SPA served by the API or hosted on GitHub Pages. Same features as Android, right in your browser.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Desktop</h3>
+          <p>Tauri, Electron, and Python/Qt clients for Windows, Linux, and macOS. All wrap the same web experience.</p>
+        </div>
+      </div>
+    </section>
 
-function updateCountdown() {
-const now = new Date();
-const diff = targetDate - now;
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-studio">
+        <span>Built by</span>
+        <img src="https://fourtexec.site/logo.png" alt="Fourtexec" class="light-logo">
+        <img src="https://fourtexec.site/dlogo.png" alt="Fourtexec" class="dark-logo">
+      </div>
+      <div class="footer-links">
+        <a href="https://api.uxaoro.fourtexec.site" target="_blank" rel="noopener">API</a>
+        <a href="https://api.uxaoro.fourtexec.site/docs" target="_blank" rel="noopener">Docs</a>
+      </div>
+      <div>© 2026 Uxaoro</div>
+    </footer>
+  </div>
 
-const daysEl = document.getElementById('days');
-const hoursEl = document.getElementById('hours');
-const minutesEl = document.getElementById('minutes');
-const secondsEl = document.getElementById('seconds');
-const betaMsg = document.getElementById('betaMessage');
+  <script>
+    (function() {
+      // Target: October 10, 12:00 UTC — adjust year if needed.
+      // Using current year (2026) based on context.
+      const targetDate = new Date(Date.UTC(2026, 9, 10, 12, 0, 0)); // month 9 = October
 
-if (diff <= 0) {
-// Beta started
-daysEl.textContent = '00';
-hoursEl.textContent = '00';
-minutesEl.textContent = '00';
-secondsEl.textContent = '00';
-if (betaMsg) {
-betaMsg.innerHTML = '<strong>Beta is live now!</strong> Welcome to Uxaoro.';
-}
-return;
-}
+      function updateCountdown() {
+        const now = new Date();
+        const diff = targetDate - now;
 
-const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+        const daysEl = document.getElementById('days');
+        const hoursEl = document.getElementById('hours');
+        const minutesEl = document.getElementById('minutes');
+        const secondsEl = document.getElementById('seconds');
+        const betaMsg = document.getElementById('betaMessage');
 
-daysEl.textContent = String(days).padStart(2, '0');
-hoursEl.textContent = String(hours).padStart(2, '0');
-minutesEl.textContent = String(minutes).padStart(2, '0');
-secondsEl.textContent = String(seconds).padStart(2, '0');
+        if (diff <= 0) {
+          // Beta started
+          daysEl.textContent = '00';
+          hoursEl.textContent = '00';
+          minutesEl.textContent = '00';
+          secondsEl.textContent = '00';
+          if (betaMsg) {
+            betaMsg.innerHTML = '<strong>Beta is live now!</strong> Welcome to Uxaoro.';
+          }
+          return;
+        }
 
-// keep beta message static until countdown ends
-}
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-updateCountdown();
-setInterval(updateCountdown, 1000);
-})();
-</script>
+        daysEl.textContent = String(days).padStart(2, '0');
+        hoursEl.textContent = String(hours).padStart(2, '0');
+        minutesEl.textContent = String(minutes).padStart(2, '0');
+        secondsEl.textContent = String(seconds).padStart(2, '0');
+
+        // keep beta message static until countdown ends
+      }
+
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+    })();
+  </script>
 </body>
 </html>

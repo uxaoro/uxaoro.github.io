@@ -1,0 +1,339 @@
+UXAORO — PRIVACY POLICY
+
+Effective date: September 24, 2026
+Last updated:   September 24, 2026
+
+This Privacy Policy explains what personal data Uxaoro collects, why, who
+it is shared with, how long it is kept, and what choices you have. It
+applies to the Uxaoro social network operated by fourtexec ("Uxaoro", "we",
+"us"): the service at uxaoro.fourtexec.site and api.uxaoro.fourtexec.site,
+the web client, the Android app, the desktop apps (Windows, Linux, macOS),
+the Uxaoro Telegram bot and the "Login with Uxaoro" developer platform
+(together, the "Service"). Words defined in our Terms of Use
+(https://uxaoro.fourtexec.site/tou.txt) have the same meaning here.
+
+fourtexec is the controller of your personal data. Contact:
+support@fourtexec.site.
+
+Short version:
+  * We do not show ads, do not sell your data, and do not use third-party
+    analytics or tracking SDKs in our apps or website.
+  * Your chat messages and chat attachments are end-to-end encrypted. We
+    store only ciphertext and cannot read them.
+  * Your profile, posts, stories, comments, reactions and the files attached
+    to them are public or visible to other users by design.
+  * Public posts are checked by an AI moderation provider for adult content.
+  * We share data only with the service providers listed in Section 5, with
+    apps you explicitly authorise, or when the law requires it.
+
+
+1. DATA YOU GIVE US
+
+1.1. Account data
+     * Username, email address, display name (initially your username).
+     * Password — stored only as a salted PBKDF2-SHA256 hash; we never store
+       or see it in plain text.
+     * The email verification code we send you (stored hashed, expires).
+     * Optional two-factor authentication secret (TOTP) if you enable 2FA.
+
+1.2. Profile data (optional)
+     Bio, status, city (only what you type — we do not track your location),
+     avatar, cover image, Premium customisation (glow, name colour and
+     style, badge, chat bubble and profile theme), and your settings: privacy
+     options (who can message you, call you, see your last-seen time, see
+     you online, send friend requests, invite you to communities or groups,
+     see your stories), "Show NSFW content" and "My account is NSFW".
+
+1.3. Content and social activity
+     * Posts, reposts, comments, likes, emoji reactions, saved posts.
+     * Photos, videos and audio you upload to posts, stories, avatars,
+       covers and communities. Files are checked by type and size; we do not
+       analyse faces or build biometric profiles.
+     * Stories (shown for 24 hours) and the list of users who viewed them.
+     * Posts you have viewed (recorded once per post, to credit UX rewards
+       and prevent duplicate rewards).
+     * Friends and friend requests, communities you created or joined and
+       your role in them, group chats and roles, blocked users.
+     * Sticker packs and stickers you create.
+     * Reports you file (target, reason, details).
+
+1.4. Messages
+     Messages and attachments are encrypted on your device with a random
+     AES-256-GCM key, which is wrapped with the RSA public key of each chat
+     member. Our servers store:
+     * the encrypted message and encrypted attachments (as opaque files),
+       nonces and wrapped keys — we cannot decrypt them;
+     * your RSA public key (the private key never leaves your device);
+     * metadata that is needed to deliver messages and is NOT encrypted:
+       which chats exist and who is a member, group titles and roles, who
+       sent a message and when, message type, sticker used, reactions to
+       messages, read position (for read receipts), pinned and muted chats,
+       and whether a message was deleted.
+
+1.5. Calls
+     Calls are peer-to-peer WebRTC connections, encrypted in transit
+     (DTLS-SRTP). Our server only relays the call set-up signals (invite,
+     offer, answer, network candidates, hang-up) between the two devices in
+     real time; it does not record or store the audio, video or those
+     signals. To connect a call, your device exchanges network addresses
+     (including your IP address) with the other person's device and contacts
+     public STUN servers (by default operated by Google). If a TURN relay is
+     configured, encrypted call media may pass through it.
+
+1.6. UX, Premium and payments
+     * UX balance and the history of UX movements (gifts sent and received,
+       including the optional gift message, purchases, activity rewards and
+       administrator grants/deductions with their reason).
+     * Purchases: invoice ID, amount of UX, price and currency, status and
+       time. Payment itself happens in Telegram through CryptoBot (Crypto
+       Pay); we never receive your wallet keys, seed phrase or card data.
+     * If you link the Telegram bot: your Telegram user ID and Telegram
+       username, and the temporary link code.
+     * Premium status and its expiry date.
+
+1.7. Developer platform
+     * Developer status, verification codes (hashed), projects (name,
+       description, website, redirect URIs), API keys (stored hashed; only a
+       short prefix is kept readable).
+     * "Login with Uxaoro": which apps you authorised, authorisation codes
+       and access tokens (stored hashed), their scope and expiry.
+
+1.8. Support
+     Emails you send to support@fourtexec.site and our replies.
+
+
+2. DATA COLLECTED AUTOMATICALLY
+
+2.1. Sessions: access tokens are signed and expire; refresh tokens are
+     stored hashed with their expiry and revocation status.
+2.2. Presence: the time you were last active and whether you are online
+     (shown to others according to your privacy settings).
+2.3. Notifications we create for you (likes, comments, friend requests,
+     gifts, etc.) and whether you have read them.
+2.4. Network data: your IP address is used in memory to enforce rate limits
+     (by default 20 requests per second per endpoint) and is not written to
+     our database. Our web server and reverse proxy keep standard technical
+     logs (IP address, time, requested URL, status, user agent) for security
+     and troubleshooting; these logs are rotated and kept for a limited
+     period (normally no longer than 30 days) unless needed to investigate
+     abuse.
+2.5. Update checks: the apps request a small manifest from
+     https://fourtexec.site/downloads/uxaoro/upd/latest.json and, if you
+     choose, download the installer from the same place. These requests
+     contain no account data; the web server sees the IP address and user
+     agent as with any web request.
+2.6. We do not use advertising identifiers, cookies for tracking, or
+     third-party analytics, crash-reporting or advertising SDKs.
+
+
+3. DATA STORED ON YOUR DEVICE
+
+The apps store on your device: your session tokens, your E2EE private key
+(Android: app-private storage; web and desktop: browser / web-view local
+storage), an offline cache of feeds, profiles and decrypted chats so you can
+read them without a connection, message drafts, appearance settings, and the
+update "remind me later" time. Downloaded update installers are saved to
+your Downloads folder. Logging out clears the session; uninstalling the app
+or clearing browser data removes the rest — export your private key in
+Settings first if you want to keep reading old messages on a new device.
+
+Device permissions: the Android app asks for the camera and microphone only
+when you make a call or record/take media, and for "install unknown apps"
+only when you choose to install an update. It does not access your
+contacts, location, SMS or call log.
+
+
+4. HOW WE USE YOUR DATA (AND OUR LEGAL BASES)
+
+ a) To provide the Service — accounts, profiles, feed, posts, stories,
+    friends, communities, messaging, calls, notifications, UX, Premium,
+    developer platform. (Performance of our contract with you.)
+ b) To rank your feed — using your friends, communities and interactions to
+    choose which posts to show first. We do not build advertising profiles.
+    (Contract; legitimate interest in a useful feed.)
+ c) To keep Uxaoro safe — email verification, 2FA, rate limiting, spam and
+    fraud prevention, handling reports, enforcing the Terms, keeping an
+    audit log of staff actions. (Legitimate interests; legal obligations.)
+ d) Automated content moderation — see Section 6. (Legitimate interest in
+    protecting users from unwanted adult content and in complying with the
+    law.)
+ e) To communicate with you — verification codes, security and service
+    messages, replies to support requests. We do not send marketing emails.
+    (Contract; legitimate interests.)
+ f) To comply with the law and respond to lawful requests. (Legal
+    obligation.)
+ g) Where we rely on consent (for example linking Telegram, authorising a
+    third-party app, turning on "Show NSFW content"), you can withdraw it at
+    any time in the app.
+
+
+5. WHO WE SHARE DATA WITH
+
+5.1. Other users — see Section 7 for what is visible.
+5.2. Service providers that process data for us:
+     * Resend (email delivery) — your email address and the content of
+       verification emails.
+     * Our AI moderation provider (an OpenAI- or Anthropic-compatible
+       model API) — public post content, see Section 6.
+     * Telegram — if you use the Uxaoro bot, your messages with the bot are
+       handled by Telegram.
+     * CryptoBot / Crypto Pay — invoice data when you buy UX (amount, asset,
+       invoice description). Your payment is made in your own Telegram /
+       CryptoBot account under their privacy policy.
+     * STUN (and, if configured, TURN) servers — your IP address during call
+       set-up, see Section 1.5.
+     * Our hosting / server provider, which stores the database and files.
+5.3. Apps you authorise with "Login with Uxaoro" receive your user ID,
+     username, display name and avatar URL — nothing else — until you revoke
+     access (Developer -> Granted access).
+5.4. Legal reasons — we may disclose data if we believe in good faith that
+     the law requires it, or that it is necessary to protect the life or
+     safety of a person, to investigate fraud or abuse, or to defend our
+     rights. End-to-end encrypted content cannot be disclosed because we do
+     not have it in readable form.
+5.5. Business transfer — if Uxaoro is transferred to another operator, your
+     data may be transferred with it under this Policy, and we will notify
+     you.
+5.6. We do not sell or rent personal data and do not share it for
+     advertising.
+
+
+6. AI CONTENT MODERATION
+
+About once an hour, an automated moderator reviews new posts that have not
+been checked yet. For each post it sends to our AI provider: the author's
+username and display name, the community (if any), the post text,
+attachment type/metadata and up to two of the post's photos (photos only
+from our own storage, never fetched from other websites). The model returns whether the post is
+adult (NSFW) content, a confidence score, categories and a short reason,
+which we store on the post and in a moderation log. Posts are flagged, not
+deleted: flagged posts are hidden from users who have not turned on "Show
+NSFW content". An account where, within 7 days, at least half of its posts
+(and at least 4 posts) are NSFW receives an NSFW mark that only staff can
+remove. Staff can review and override every automated decision; contact
+support@fourtexec.site to ask for a human review.
+
+Private messages are never sent to the AI provider — they are end-to-end
+encrypted and we cannot read them.
+
+
+7. WHAT OTHER PEOPLE CAN SEE
+
+Visible to other users (and, through the API, to anyone signed in):
+ * username, display name, bio, status, city, avatar, cover, role (e.g.
+   admin, moderator), registration date, number of friends, developer
+   badge, Premium status and customisation;
+ * your UX balance;
+ * your account NSFW mark and the share of your posts marked NSFW;
+ * your posts, reposts, comments, likes, reactions, stories (to the
+   audience allowed by "Who can see my stories"), community memberships and
+   roles;
+ * your last-seen time and online status, according to your settings.
+Files attached to posts, stories, avatars and covers are served from web
+addresses that anyone who has the link can open, even without an account.
+
+Not visible to other users: your email address, password hash, 2FA secret,
+settings, saved posts, blocked users, reports you filed, purchase history,
+Telegram link, and the content of chats you are not a member of.
+
+
+8. HOW LONG WE KEEP DATA
+
+ * Account and profile data: while your account exists.
+ * Posts, comments, messages: until you delete them or your account. When
+   you delete an item it is hidden from everyone immediately; the record may
+   remain in our database in deleted state and is purged together with your
+   account or during periodic clean-up.
+ * Stories: hidden after 24 hours; their files may remain on the server
+   until periodic clean-up or account deletion.
+ * Pending registrations, verification codes, link codes and OAuth codes:
+   until they expire (minutes to hours) or are used.
+ * UX transactions and purchase records: for as long as your account
+   exists, and afterwards for as long as needed for accounting, fraud
+   prevention and legal obligations.
+ * Moderation verdicts, reports and the staff audit log: as long as needed
+   to enforce the Terms and handle appeals.
+ * Server technical logs: see Section 2.4.
+ * Backups: overwritten on a rolling basis.
+
+Account deletion: email support@fourtexec.site from the address linked to
+your account. We will verify the request and, within 30 days, delete your
+account, profile, posts, comments, stories, reactions, uploaded files and
+your copies of messages, or anonymise them where deletion is not possible
+(for example, records we must keep by law, or messages that remain in other
+members' chats in encrypted form). Content other users reshared may remain
+as a reference without your data.
+
+
+9. SECURITY
+
+We protect data with HTTPS/TLS for all traffic, end-to-end encryption of
+messages and chat files, salted PBKDF2 password hashing, hashed tokens and
+API keys, optional two-factor authentication, rate limiting, WebSocket
+authentication that keeps tokens out of URLs, and (in the Android app)
+protection against TLS-intercepting proxies. No system is perfectly secure;
+if we learn of a breach that affects your personal data, we will notify you
+and the authorities where the law requires it.
+
+
+10. YOUR RIGHTS AND CHOICES
+
+Depending on where you live (for example under the GDPR in the EU/EEA/UK,
+the CCPA/CPRA in California, or Russian Federal Law No. 152-FZ "On Personal
+Data"), you may have the right to access your data, correct it, delete it,
+receive a copy in a portable format, restrict or object to processing, and
+withdraw consent. Many of these you can do yourself in the app:
+ * edit your profile, change privacy settings, change your password;
+ * delete posts, comments, stories and messages;
+ * turn "Show NSFW content" and "My account is NSFW" on or off (unless the
+   NSFW mark is locked);
+ * revoke apps you authorised, block users;
+ * export your E2EE private key.
+For anything else — a copy of your data, account deletion, objections —
+email support@fourtexec.site from the address linked to your account. We
+answer within 30 days. You also have the right to complain to your local
+data-protection authority.
+
+We do not sell or "share" personal information for cross-context behavioural
+advertising as those terms are defined in the CCPA/CPRA.
+
+
+11. CHILDREN
+
+Uxaoro is not intended for children under 13, and we do not knowingly
+collect data from them. If you believe a child under 13 has created an
+account, contact support@fourtexec.site and we will delete it. Adult content
+is hidden by default, and users under 18 must not enable it (see the Terms
+of Use).
+
+
+12. INTERNATIONAL TRANSFERS
+
+Our servers and some of our providers (for example email delivery, AI
+moderation, Telegram and CryptoBot) may be located in countries other than
+yours, which may have different data-protection laws. Where required, we
+rely on appropriate safeguards for such transfers (such as standard
+contractual clauses offered by the provider).
+
+
+13. CUSTOM SERVERS AND THIRD-PARTY LINKS
+
+The apps can be pointed at a server that is not operated by us (developer
+settings). Such servers, and external websites or apps linked from Uxaoro
+(including apps using "Login with Uxaoro"), have their own privacy
+practices; this Policy does not cover them.
+
+
+14. CHANGES TO THIS POLICY
+
+We may update this Policy. The current version is always at
+https://uxaoro.fourtexec.site/pp.txt with its "Last updated" date. If
+changes materially affect how we use your data, we will notify you in the
+app or by email before they take effect.
+
+
+15. CONTACT
+
+fourtexec — operator of Uxaoro
+Email: support@fourtexec.site
+Web:   https://uxaoro.fourtexec.site

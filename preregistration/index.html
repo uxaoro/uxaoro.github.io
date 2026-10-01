@@ -1,0 +1,972 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <title>Uxaoro — Preregistration</title>
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
+  <link id="site-favicon" rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%201000%201000%22%3E%3Crect%20width%3D%221000%22%20height%3D%221000%22%20rx%3D%22220%22%20fill%3D%22%23000%22%2F%3E%3Cpath%20fill%3D%22%23fff%22%20fill-rule%3D%22evenodd%22%20d%3D%22M395.3%2C219.0%20391.6%2C225.1%20391.6%2C485.8%20389.9%2C488.0%20391.6%2C490.7%20391.6%2C515.1%20388.2%2C518.6%20376.7%2C518.8%20367.4%2C530.0%20351.8%2C539.8%20330.3%2C545.7%20328.4%2C544.2%20322.8%2C545.9%20320.6%2C544.2%20318.1%2C545.7%20315.9%2C543.9%20309.1%2C543.9%20292.7%2C537.8%20281.0%2C530.0%20272.7%2C521.7Z%20M170.9%2C223.1%20168.9%2C227.1%20168.9%2C771.0%20171.1%2C777.6%20175.5%2C783.9%20186.0%2C790.0%20239.7%2C790.0%20246.3%2C787.8%20254.4%2C780.3%20270.0%2C786.1%20290.5%2C788.1%20293.5%2C790.0%20356.9%2C790.0%20359.1%2C788.3%20361.6%2C789.8%20386.2%2C784.2%20406.5%2C776.1%20429.9%2C760.5%20443.8%2C747.1%20451.4%2C749.3%20478.8%2C770.3%20483.2%2C765.9Z%20M764.4%2C234.6%20661.4%2C372.8%20629.6%2C418.2%20625.2%2C422.6%20622.8%2C422.6%20618.4%2C418.2Z%20M223.9%2C265.4%20234.6%2C264.9%20239.0%2C271.2%20237.5%2C273.7%20239.3%2C275.9%20239.3%2C681.2%20231.9%2C690.4%20226.3%2C690.2%20221.9%2C685.8Z%20M479.7%2C380.6%20483.2%2C380.6%20493.4%2C396.7%20569.3%2C498.5%20481.9%2C618.2%20479.7%2C617.4%20481.2%2C615.5Z%20M622.3%2C575.9%20625.2%2C575.4%20629.6%2C579.8%20639.9%2C595.9%20657.0%2C616.9%20661.4%2C625.2%20684.3%2C654.1%20688.7%2C662.4%20769.3%2C770.3%20836.7%2C787.4Z%22%2F%3E%3C%2Fsvg%3E">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #000;
+      --ink: #fff;
+      --muted: #fff;
+      --line: rgba(255,255,255,.16);
+      --coral: #6366F1;
+      --ok: #3d9a6a;
+      --danger: #ff5d73;
+      --radius: 22px;
+      --font: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+      --glass: rgba(255,255,255,.08);
+      --glass-2: rgba(255,255,255,.14);
+      --blur: 24px;
+      --font-scale: 1;
+    }
+    html[data-theme="light"] {
+      color-scheme: light;
+      --bg: #fff;
+      --ink: #111;
+      --muted: #52525b;
+      --line: rgba(0,0,0,.12);
+      --glass: rgba(0,0,0,.05);
+      --glass-2: rgba(0,0,0,.09);
+    }
+    html[data-theme="dark"][data-amoled="1"] {
+      --bg: #000;
+      --glass: rgba(255,255,255,.06);
+    }
+    html[data-compact="1"] {
+      --radius: 16px;
+    }
+    html[data-compact="1"] .card { padding: 12px; margin: 8px 0; }
+    html.reduce-motion, html.reduce-motion * {
+      animation: none !important;
+      transition: none !important;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; min-height: 100%;
+      background: var(--bg); color: var(--ink);
+      font-family: var(--font);
+      font-size: calc(16px * var(--font-scale));
+    }
+    body { background: var(--bg); overflow-x: hidden; color: var(--ink); }
+    a { color: inherit; text-decoration: none; cursor: pointer; }
+    button, input, textarea, select { font: inherit; color: inherit; }
+    button {
+      background: var(--ink);
+      color: var(--bg); border: 0; border-radius: 999px;
+      padding: 10px 16px; font-weight: 700; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 8px; justify-content: center;
+    }
+    button.ghost {
+      background: var(--glass);
+      color: var(--ink);
+      border: 0;
+      backdrop-filter: blur(var(--blur));
+      -webkit-backdrop-filter: blur(var(--blur));
+    }
+    button.ok { background: var(--ok); color: #04150c; }
+    button.danger { background: var(--danger); color: #fff; }
+    button:disabled { opacity: .45; cursor: default; }
+    input, textarea, select {
+      width: 100%;
+      background: var(--glass);
+      border: 0;
+      border-radius: 14px;
+      padding: 10px 12px; outline: none;
+      color: var(--ink);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      -webkit-user-select: text;
+      user-select: text;
+    }
+    input::placeholder, textarea::placeholder { color: var(--ink); opacity: .55; }
+    input:focus, textarea:focus, select:focus {
+      box-shadow: 0 0 0 2px var(--ink);
+    }
+    .hidden { display: none !important; }
+    #root { position: relative; z-index: 1; min-height: 100vh; background: var(--bg); color: var(--ink); }
+
+    .mark {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 22px;
+      font-weight: 800; letter-spacing: .04em; font-size: 20px; color: var(--ink);
+    }
+    .mark-logo {
+      width: 38px; height: 38px; flex: 0 0 auto; display: block;
+      color: var(--ink);
+    }
+    .mark .word { color: var(--ink); }
+    .beta-tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: var(--coral);
+      color: #fff;
+      line-height: 1.3;
+      vertical-align: middle;
+    }
+    .card {
+      background: var(--glass);
+      border: 0;
+      border-radius: var(--radius);
+      padding: 16px; margin: 12px 0;
+      color: var(--ink);
+      backdrop-filter: blur(var(--blur));
+      -webkit-backdrop-filter: blur(var(--blur));
+    }
+    .row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .row.spread { justify-content: space-between; }
+    .muted { color: var(--muted); }
+    .tiny { font-size: 12px; color: var(--muted); }
+    .legal-consent { margin: 0 0 10px; line-height: 1.45; }
+    .legal-consent a { color: var(--ink); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
+    .legal-consent a:hover { color: var(--coral); }
+    .h1 { font-size: 28px; margin: 0 0 8px; letter-spacing: -.03em; color: var(--ink); }
+    .chip {
+      font-size: 12px; border: 0; border-radius: 999px; padding: 4px 10px; color: var(--ink);
+      background: var(--glass);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      cursor: pointer;
+    }
+    .chip.on { color: var(--bg); background: var(--ink); }
+    .err { color: var(--danger); min-height: 1.2em; font-size: 13px; margin-top: 6px; }
+
+    .auth-only {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 28px 16px 48px;
+      background: var(--bg);
+      color: var(--ink);
+    }
+    .auth-only .auth-head {
+      width: min(420px, 100%);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+    .auth-only .auth-head .mark { margin: 0; }
+    .auth-only .auth-card {
+      width: min(420px, 100%);
+      margin: 0;
+      padding: 22px;
+    }
+    .auth-only h1 { margin: 0 0 6px; font-size: 26px; }
+    .swatch {
+      width: 28px; height: 28px; border-radius: 50%; cursor: pointer;
+      box-shadow: 0 0 0 2px transparent;
+    }
+    .swatch.on { box-shadow: 0 0 0 2px var(--ink); }
+    .sec-label { letter-spacing: .14em; text-transform: uppercase; font-size: 11px; font-weight: 800; margin: 22px 0 8px; color: var(--ink); }
+    .stat { font-size: 28px; font-weight: 800; margin: 0; color: var(--ink); font-variant-numeric: tabular-nums; }
+    .tabs { display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0 14px; }
+
+    /* Countdown grid styled in Uxaoro glass aesthetic */
+    .cd-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin: 14px 0;
+    }
+    .cd-box {
+      background: var(--glass);
+      border-radius: 16px;
+      padding: 12px 6px;
+      text-align: center;
+    }
+    .cd-box .stat {
+      font-size: 26px;
+      line-height: 1.1;
+    }
+    .cd-box .tiny {
+      margin-top: 4px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      font-size: 10px;
+      opacity: .8;
+    }
+
+    .ico {
+      display: inline-flex;
+      width: 1.25em; height: 1.25em;
+      flex: none;
+      vertical-align: -0.2em;
+      color: inherit;
+    }
+    .ico.on { color: var(--coral); }
+    .ico-svg { width: 100%; height: 100%; display: block; overflow: visible; }
+    button .ico { width: 18px; height: 18px; }
+    .ico-spin { transform-origin: 50% 50%; transform-box: view-box; }
+    .ico-slide { transform-origin: 50% 50%; }
+    .ico-twinkle { transform-origin: 50% 48%; transform-box: fill-box; }
+    .ico:hover .ico-spin, button:hover .ico-spin { animation: ico-spin .7s cubic-bezier(.16,1,.3,1); }
+    .ico:hover .ico-slide, button:hover .ico-slide { animation: ico-slide .55s cubic-bezier(.16,1,.3,1); }
+    .ico:hover .ico-twinkle, button:hover .ico-twinkle { animation: ico-twinkle .9s ease-in-out; }
+    @keyframes ico-spin { from { transform: rotate(0deg); } to { transform: rotate(90deg); } }
+    @keyframes ico-slide { 0%,100% { transform: translateX(0); } 40% { transform: translateX(-10px); } }
+    @keyframes ico-twinkle { 0%,100% { transform: scale(1) rotate(0); } 40% { transform: scale(1.12) rotate(-8deg); } 70% { transform: scale(.96) rotate(6deg); } }
+
+    @media (max-width: 800px) {
+      .auth-only .auth-card input, .auth-only .auth-card textarea { font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script>
+    (() => {
+      // Beta release cutoff: October 10, 12:00:00 UTC (2026-10-10T12:00:00Z).
+      const BETA_OPEN_UTC = Date.UTC(2026, 9, 10, 12, 0, 0);
+      const REDIRECT_URL = "https://uxaoro.fourtexec.site";
+      const API_BASE = "https://api.uxaoro.fourtexec.site";
+
+      const ACCENTS = {
+        indigo: "#6366F1", blue: "#3B82F6", violet: "#8B5CF6", teal: "#14B8A6",
+        green: "#22C55E", cyan: "#06B6D4", orange: "#F97316", rose: "#F43F5E",
+        amber: "#F59E0B", pink: "#EC4899",
+      };
+
+      const LOGO_LIGHT_URI = "data:image/png;base64,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";
+      const LOGO_DARK_URI = "data:image/png;base64,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";
+      const isDarkNow = () => {
+        const theme = ls("uxa_theme", "system");
+        return theme === "dark" || (theme !== "light" && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
+      };
+      const logoImg = (cls) => `<img class="${cls}" src="${isDarkNow() ? LOGO_DARK_URI : LOGO_LIGHT_URI}" alt="Uxaoro" style="height:32px;width:auto;">`;
+
+      const ST = 'fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"';
+      const FL = 'fill="currentColor"';
+      const box = (cls, attrs, inner) => `<svg class="ico-svg ${cls || ""}" viewBox="0 0 256 256" aria-hidden="true" ${attrs}>${inner}</svg>`;
+      const PATHS = {
+        cog: "M41.43,178.09A99.14,99.14,0,0,1,31.36,153.8l16.78-21a81.59,81.59,0,0,1,0-9.64l-16.77-21a99.43,99.43,0,0,1,10.05-24.3l26.71-3a81,81,0,0,1,6.81-6.81l3-26.7A99.14,99.14,0,0,1,102.2,31.36l21,16.78a81.59,81.59,0,0,1,9.64,0l21-16.77a99.43,99.43,0,0,1,24.3,10.05l3,26.71a81,81,0,0,1,6.81,6.81l26.7,3a99.14,99.14,0,0,1,10.07,24.29l-16.78,21a81.59,81.59,0,0,1,0,9.64l16.77,21a99.43,99.43,0,0,1-10,24.3l-26.71,3a81,81,0,0,1-6.81,6.81l-3,26.7a99.14,99.14,0,0,1-24.29,10.07l-21-16.78a81.59,81.59,0,0,1-9.64,0l-21,16.77a99.43,99.43,0,0,1-24.3-10l-3-26.71a81,81,0,0,1-6.81-6.81Z",
+        arrowLeft: "M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z",
+        star: "M239.18,97.26A16.38,16.38,0,0,0,224.92,86l-59-4.76L143.14,26.15a16.36,16.36,0,0,0-30.27,0L90.11,81.23,31.08,86a16.46,16.46,0,0,0-9.37,28.86l45,38.83L53,211.75a16.38,16.38,0,0,0,24.5,17.82L128,198.49l50.53,31.08A16.4,16.4,0,0,0,203,211.75l-13.76-58.07,45-38.83A16.43,16.43,0,0,0,239.18,97.26Z",
+      };
+      const DRAW = {
+        gear: () => box("ico-stroke", ST, `<g class="ico-spin"><circle cx="128" cy="128" r="40"/><path d="${PATHS.cog}"/></g>`),
+        back: () => box("ico-fill", FL, `<path class="ico-slide" d="${PATHS.arrowLeft}"/>`),
+        star: () => box("ico-fill", FL, `<g class="ico-twinkle"><path d="${PATHS.star}"/></g>`),
+      };
+      const ico = (name, cls) => `<span class="ico ico-${name}${cls ? " " + cls : ""}">${(DRAW[name] || DRAW.star)()}</span>`;
+
+      const $ = (sel) => document.querySelector(sel);
+      const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+      const ls = (k, d) => {
+        const v = localStorage.getItem(k);
+        return v == null ? d : v;
+      };
+
+      const S = {
+        view: "register", // "register" | "countdown" | "authsettings" | "expired"
+        pendingEmail: sessionStorage.getItem("uxa_pe") || "",
+        pendingEmailAddr: sessionStorage.getItem("uxa_pea") || "",
+        registeredUser: localStorage.getItem("uxa_prereg_user") || "",
+        authBusy: false,
+        captchaChecked: false,
+        captchaEnabled: true,
+        captchaSiteKey: "0x4AAAAAAFKxa78Rd8MJNIC8",
+        captchaWidgetUrl: "https://challenges.cloudflare.com/turnstile/v0/api.js",
+        captchaPass: "",
+        turnstileToken: "",
+        turnstileWidgetId: null,
+        verifyPromise: null,
+        captchaState: "web-" + Math.random().toString(36).slice(2, 12),
+        captchaFrameOpen: false,
+        emailInfo: "",
+        resendUntil: 0,
+        draft: { user: "", email: "", dob: "", pass: "", code: "" },
+      };
+
+      function snapshotDraft() {
+        const u = $("#f-user"); if (u) S.draft.user = u.value;
+        const e = $("#f-email"); if (e) S.draft.email = e.value;
+        const d = $("#f-dob"); if (d) S.draft.dob = d.value;
+        const p = $("#f-pass"); if (p) S.draft.pass = p.value;
+        const c = $("#f-email-code"); if (c) S.draft.code = c.value;
+      }
+
+      function restoreDraft() {
+        const u = $("#f-user"); if (u && S.draft.user) u.value = S.draft.user;
+        const e = $("#f-email"); if (e && S.draft.email) e.value = S.draft.email;
+        const d = $("#f-dob"); if (d && S.draft.dob) d.value = S.draft.dob;
+        const p = $("#f-pass"); if (p && S.draft.pass) p.value = S.draft.pass;
+        const c = $("#f-email-code"); if (c && S.draft.code) c.value = S.draft.code;
+      }
+
+      window.addEventListener("message", (ev) => {
+        const d = ev && ev.data;
+        if (!d || d.type !== "uxaoro-captcha-pass") return;
+        if (d.disabled) {
+          S.captchaEnabled = false;
+          S.captchaFrameOpen = false;
+          snapshotDraft();
+          render();
+          return;
+        }
+        if (d.captcha_pass) {
+          S.captchaPass = String(d.captcha_pass);
+          S.captchaFrameOpen = false;
+          snapshotDraft();
+          render();
+        }
+      });
+
+      async function loadCaptchaConfig() {
+        if (S.captchaChecked) return;
+        S.captchaChecked = true;
+        try {
+          // Simple GET with ?state=web-init (no custom headers, no CORS preflight, never 400)
+          const res = await fetch(apiUrl("/auth/captcha?state=web-init"));
+          const text = await res.text();
+          if (!res.ok) return;
+          let parsed = null;
+          try { parsed = JSON.parse(text); } catch (_) {}
+          if (parsed && typeof parsed === "object") {
+            S.captchaEnabled = !!parsed.enabled;
+            if (parsed.site_key && parsed.site_key !== S.captchaSiteKey) {
+              S.captchaSiteKey = String(parsed.site_key).trim();
+              snapshotDraft();
+              render();
+            } else if (!S.captchaEnabled) {
+              snapshotDraft();
+              render();
+            }
+            return;
+          }
+          if (/CAPTCHA is disabled/i.test(text)) {
+            S.captchaEnabled = false;
+            snapshotDraft();
+            render();
+            return;
+          }
+          const skMatch = /data-sitekey=["']([^"']+)["']/i.exec(text);
+          if (skMatch && skMatch[1]) {
+            const newKey = skMatch[1].trim();
+            if (!S.captchaEnabled || newKey !== S.captchaSiteKey) {
+              S.captchaEnabled = true;
+              S.captchaSiteKey = newKey;
+              snapshotDraft();
+              render();
+            }
+          }
+        } catch (_) {}
+      }
+
+      async function verifyTurnstileToken(token) {
+        const tok = String(token || "").trim();
+        if (!tok) return "";
+        S.turnstileToken = tok;
+        const st = $("#captcha-status");
+        if (st) { st.style.color = "var(--muted)"; st.textContent = "Verifying security check…"; }
+        const err = $("#f-err");
+        if (err && /captcha/i.test(err.textContent || "")) err.textContent = "";
+        const p = (async () => {
+          try {
+            const res = await api("/auth/captcha/verify", {
+              method: "POST",
+              body: { token: tok },
+            });
+            if (!res || !res.captcha_pass) throw new Error("CAPTCHA verification failed");
+            S.captchaPass = res.captcha_pass;
+            S.turnstileToken = "";
+            S.captchaFrameOpen = false;
+            const stNow = $("#captcha-status");
+            if (stNow) { stNow.style.color = "#22C55E"; stNow.textContent = "✓ Security check verified"; }
+            return S.captchaPass;
+          } catch (e) {
+            S.captchaPass = "";
+            const stNow = $("#captcha-status");
+            if (stNow) { stNow.style.color = "var(--danger)"; stNow.textContent = e.message || "CAPTCHA verification failed"; }
+            if (window.turnstile && S.turnstileWidgetId != null) {
+              try { window.turnstile.reset(S.turnstileWidgetId); } catch (_) {}
+            }
+            throw e;
+          } finally {
+            S.verifyPromise = null;
+          }
+        })();
+        S.verifyPromise = p;
+        return p;
+      }
+
+      let turnstilePollTimer = null;
+      function mountTurnstileWidget() {
+        if (!S.captchaEnabled || S.captchaPass || !S.captchaSiteKey) return;
+        const box = document.getElementById("cf-turnstile-box");
+        if (!box) return;
+        const doRender = () => {
+          const target = document.getElementById("cf-turnstile-box");
+          if (!window.turnstile || !target) return false;
+          if (target.dataset.mounted === S.captchaSiteKey && target.children.length > 0) return true;
+          target.innerHTML = "";
+          try {
+            S.turnstileWidgetId = window.turnstile.render(target, {
+              sitekey: S.captchaSiteKey,
+              theme: isDarkNow() ? "dark" : "light",
+              callback: (tok) => { verifyTurnstileToken(tok).catch(() => {}); },
+              "error-callback": () => {
+                const st = $("#captcha-status");
+                if (st) { st.style.color = "var(--danger)"; st.textContent = "Could not load CAPTCHA widget. Check connection and retry."; }
+              },
+              "expired-callback": () => {
+                S.captchaPass = "";
+                S.turnstileToken = "";
+                const st = $("#captcha-status");
+                if (st) { st.style.color = "var(--danger)"; st.textContent = "CAPTCHA expired — please check the box again."; }
+              },
+            });
+            target.dataset.mounted = S.captchaSiteKey;
+            return true;
+          } catch (_) {
+            return false;
+          }
+        };
+        if (doRender()) return;
+        if (turnstilePollTimer) clearInterval(turnstilePollTimer);
+        let tries = 0;
+        turnstilePollTimer = setInterval(() => {
+          tries++;
+          if (doRender() || tries > 60) {
+            clearInterval(turnstilePollTimer);
+            turnstilePollTimer = null;
+          }
+        }, 150);
+      }
+
+      function setPendingEmail(tok, addr) {
+        S.pendingEmail = tok || "";
+        S.pendingEmailAddr = addr || "";
+        try {
+          if (S.pendingEmail) {
+            sessionStorage.setItem("uxa_pe", S.pendingEmail);
+            sessionStorage.setItem("uxa_pea", S.pendingEmailAddr);
+          } else {
+            sessionStorage.removeItem("uxa_pe");
+            sessionStorage.removeItem("uxa_pea");
+          }
+        } catch (_) {}
+      }
+
+      function apiBase() {
+        return API_BASE;
+      }
+
+      function apiUrl(path) {
+        if (!path) return API_BASE;
+        if (/^https?:\/\//i.test(path)) return path;
+        const p = path.startsWith("/") ? path : "/" + path;
+        return API_BASE + p;
+      }
+
+      async function api(path, opts) {
+        opts = opts || {};
+        const headers = Object.assign({ "Content-Type": "application/json" }, opts.headers || {});
+        const res = await fetch(apiUrl(path), {
+          method: opts.method || "GET",
+          headers,
+          body: opts.body ? JSON.stringify(opts.body) : undefined,
+        });
+        const text = await res.text();
+        let data = null;
+        try { data = text ? JSON.parse(text) : null; } catch (_) { data = { detail: text }; }
+        if (!res.ok) {
+          throw new Error((data && (data.detail || data.error)) || ("HTTP " + res.status));
+        }
+        return data;
+      }
+
+      function applyAppearance() {
+        const theme = ls("uxa_theme", "system");
+        const accent = ls("uxa_accent", "indigo");
+        const font = ls("uxa_font", "normal");
+        const amoled = ls("uxa_amoled", "0") === "1";
+        const compact = ls("uxa_compact", "0") === "1";
+        const reduce = ls("uxa_motion", "0") === "1";
+        const dark = theme === "dark" || (theme !== "light" && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
+        document.documentElement.dataset.theme = dark ? "dark" : "light";
+        document.documentElement.dataset.amoled = amoled && dark ? "1" : "0";
+        document.documentElement.dataset.compact = compact ? "1" : "0";
+        document.documentElement.classList.toggle("reduce-motion", reduce);
+        document.documentElement.style.setProperty("--coral", ACCENTS[accent] || ACCENTS.indigo);
+        document.documentElement.style.setProperty("--font-scale", font === "small" ? "0.9" : font === "large" ? "1.15" : "1");
+        const fav = document.getElementById("site-favicon") || document.querySelector("link[rel='icon']");
+        if (fav) fav.href = dark ? LOGO_DARK_URI : LOGO_LIGHT_URI;
+        document.querySelectorAll("img.mark-logo").forEach((img) => {
+          img.src = dark ? LOGO_DARK_URI : LOGO_LIGHT_URI;
+        });
+      }
+
+      function lookPanel() {
+        const theme = ls("uxa_theme", "system");
+        const accent = ls("uxa_accent", "indigo");
+        const font = ls("uxa_font", "normal");
+        const amoled = ls("uxa_amoled", "0") === "1";
+        const compact = ls("uxa_compact", "0") === "1";
+        const reduce = ls("uxa_motion", "0") === "1";
+        const smile = ls("uxa_smile", "apple");
+        const themes = [["system", "System"], ["light", "Light"], ["dark", "Dark"]];
+        const fonts = [["small", "Small"], ["normal", "Default"], ["large", "Large"]];
+        const smileStyles = [["apple", "Apple"], ["google", "Google"], ["oneui", "OneUI"]];
+        return `
+          <p class="sec-label">Theme</p>
+          <div class="tabs">${themes.map(([k, l]) => `<button class="chip ${theme === k ? "on" : ""}" data-theme="${k}">${l}</button>`).join("")}</div>
+          <p class="sec-label">Accent color</p>
+          <div class="row">${Object.entries(ACCENTS).map(([k, c]) =>
+            `<div class="swatch ${accent === k ? "on" : ""}" data-accent="${k}" style="background:${c}" title="${k}"></div>`
+          ).join("")}</div>
+          <p class="sec-label">Text size</p>
+          <div class="tabs">${fonts.map(([k, l]) => `<button class="chip ${font === k ? "on" : ""}" data-font="${k}">${l}</button>`).join("")}</div>
+          <p class="sec-label">Smiles style</p>
+          <div class="tabs">${smileStyles.map(([k, l]) => `<button class="chip ${smile === k ? "on" : ""}" data-smile="${k}">${l}</button>`).join("")}</div>
+          <p class="sec-label">Display</p>
+          <div class="tabs">
+            <button class="chip ${amoled ? "on" : ""}" data-toggle="uxa_amoled">AMOLED ${amoled ? "on" : "off"}</button>
+            <button class="chip ${compact ? "on" : ""}" data-toggle="uxa_compact">${compact ? "Compact" : "Comfortable"}</button>
+            <button class="chip ${reduce ? "on" : ""}" data-toggle="uxa_motion">Reduce motion: ${reduce ? "on" : "off"}</button>
+          </div>
+        `;
+      }
+
+      function bindLook(el) {
+        if (!el) return;
+        el.querySelectorAll("[data-theme]").forEach((n) => n.onclick = () => {
+          localStorage.setItem("uxa_theme", n.getAttribute("data-theme"));
+          applyAppearance();
+          render();
+        });
+        el.querySelectorAll("[data-accent]").forEach((n) => n.onclick = () => {
+          localStorage.setItem("uxa_accent", n.getAttribute("data-accent"));
+          applyAppearance();
+          render();
+        });
+        el.querySelectorAll("[data-font]").forEach((n) => n.onclick = () => {
+          localStorage.setItem("uxa_font", n.getAttribute("data-font"));
+          applyAppearance();
+          render();
+        });
+        el.querySelectorAll("[data-smile]").forEach((n) => n.onclick = () => {
+          localStorage.setItem("uxa_smile", n.getAttribute("data-smile"));
+          applyAppearance();
+          render();
+        });
+        el.querySelectorAll("[data-toggle]").forEach((n) => n.onclick = () => {
+          const k = n.getAttribute("data-toggle");
+          localStorage.setItem(k, ls(k, "0") === "1" ? "0" : "1");
+          applyAppearance();
+          render();
+        });
+      }
+
+      function authWrap(inner) {
+        return `<div class="auth-only">
+          <div class="auth-head">
+            <div class="mark">${logoImg("mark-logo")}<span class="word">Uxaoro</span><span class="beta-tag">Beta</span></div>
+            <button class="ghost" data-go="authsettings">${ico("gear")}<span>Settings</span></button>
+          </div>
+          ${inner}
+        </div>`;
+      }
+
+      function legalConsent(buttonLabel) {
+        const tou = "https://uxaoro.fourtexec.site/tou.txt";
+        const pp = "https://uxaoro.fourtexec.site/pp.txt";
+        return `<p class="tiny legal-consent">By pressing <b>${esc(buttonLabel)}</b> you agree to our <a href="${tou}" target="_blank" rel="noopener noreferrer">Terms of Use</a> and <a href="${pp}" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.</p>`;
+      }
+
+      function countdownParts() {
+        const diff = Math.max(0, BETA_OPEN_UTC - Date.now());
+        const totalSecs = Math.floor(diff / 1000);
+        const days = Math.floor(totalSecs / 86400);
+        const hours = Math.floor((totalSecs % 86400) / 3600);
+        const mins = Math.floor((totalSecs % 3600) / 60);
+        const secs = totalSecs % 60;
+        return {
+          expired: BETA_OPEN_UTC <= Date.now(),
+          days: String(days).padStart(2, "0"),
+          hours: String(hours).padStart(2, "0"),
+          mins: String(mins).padStart(2, "0"),
+          secs: String(secs).padStart(2, "0"),
+        };
+      }
+
+      function countdownBlockHtml() {
+        const c = countdownParts();
+        return `
+          <div class="cd-grid" id="cd-widget">
+            <div class="cd-box"><p class="stat" id="cd-d">${c.days}</p><div class="tiny">Days</div></div>
+            <div class="cd-box"><p class="stat" id="cd-h">${c.hours}</p><div class="tiny">Hours</div></div>
+            <div class="cd-box"><p class="stat" id="cd-m">${c.mins}</p><div class="tiny">Minutes</div></div>
+            <div class="cd-box"><p class="stat" id="cd-s">${c.secs}</p><div class="tiny">Seconds</div></div>
+          </div>
+          <p class="tiny" style="text-align:center;margin:0 0 6px">Beta release: <b>October 10 · 12:00 UTC</b></p>
+        `;
+      }
+
+      function captchaBlockHtml() {
+        if (!S.captchaEnabled) return "";
+        if (S.captchaPass) {
+          return `
+            <div style="margin:10px 0;padding:10px 12px;border-radius:14px;background:var(--glass);display:flex;align-items:center;justify-content:space-between;gap:8px">
+              <span class="tiny" id="captcha-status" style="color:#22C55E;font-weight:700">✓ Security check verified</span>
+              <button type="button" class="ghost" id="f-captcha-reset" style="padding:4px 10px;font-size:11px">Reset</button>
+            </div>
+          `;
+        }
+        return `
+          <div style="margin:10px 0;padding:12px;border-radius:14px;background:var(--glass)">
+            <div class="row spread" style="margin-bottom:6px">
+              <span class="tiny" style="font-weight:700;color:var(--ink)">Security check (CAPTCHA)</span>
+            </div>
+            <div id="cf-turnstile-box" style="min-height:65px;display:flex;align-items:center;justify-content:center"></div>
+            <div class="tiny" id="captcha-status" style="margin-top:4px;min-height:1.1em"></div>
+          </div>
+        `;
+      }
+
+      function preregFormView() {
+        if (S.pendingEmail) {
+          const waitSec = Math.max(0, Math.ceil((S.resendUntil - Date.now()) / 1000));
+          return authWrap(`<form class="card auth-card" onsubmit="return false">
+            <h1>Check your email</h1>
+            <p class="muted">We sent a 6-digit verification code to <b>${esc(S.pendingEmailAddr || "your email")}</b>. Enter it below to finish preregistering.</p>
+            ${S.emailInfo ? `<p class="tiny" id="f-ok" style="color:#22C55E;font-weight:600;margin:0 0 8px">${esc(S.emailInfo)}</p>` : `<div id="f-ok"></div>`}
+            <input id="f-email-code" placeholder="6-digit code" maxlength="6" inputmode="numeric" autocomplete="one-time-code">
+            <div class="err" id="f-err"></div>
+            <div style="height:12px"></div>
+            <button type="submit" id="f-go">Verify email</button>
+            <p class="tiny" style="margin-top:12px">
+              <a id="f-resend" href="#">${waitSec > 0 ? `Resend code (${waitSec}s)` : "Resend email code"}</a>
+              · <a id="f-back-reg" href="#">Change email</a>
+            </p>
+          </form>`);
+        }
+        return authWrap(`<form class="card auth-card" onsubmit="return false">
+          <div class="row spread" style="margin-bottom:4px">
+            <h1>Join Uxaoro</h1>
+            <span class="chip on">Beta Preregistration</span>
+          </div>
+          <p class="muted">Reserve your account before Beta opens on October 10, 12:00 UTC.</p>
+          <input id="f-user" placeholder="username" autocomplete="username" required>
+          <div style="height:8px"></div>
+          <input id="f-email" placeholder="email" type="email" autocomplete="email" required>
+          <div style="height:8px"></div>
+          <label class="tiny" for="f-dob" style="display:block;margin-bottom:4px">Date of birth (required, must be 13+)</label>
+          <input id="f-dob" type="date" placeholder="Date of birth (YYYY-MM-DD)" required>
+          <div style="height:8px"></div>
+          <input id="f-pass" placeholder="password" type="password" autocomplete="new-password" required>
+          ${captchaBlockHtml()}
+          <div class="err" id="f-err"></div>
+          <div style="height:12px"></div>
+          ${legalConsent("Create account")}
+          <button type="submit" id="f-go">Create account</button>
+        </form>`);
+      }
+
+      function countdownOnlyView() {
+        return authWrap(`<div class="card auth-card">
+          <div class="row spread" style="margin-bottom:6px">
+            <h1>You're in!</h1>
+            <span class="chip on">✦ Reserved</span>
+          </div>
+          <p class="muted">
+            ${S.registeredUser ? `Your handle <b>@${esc(S.registeredUser)}</b> is reserved.` : "Your Uxaoro account is reserved."}
+            The Uxaoro app will unlock when the Beta release countdown reaches zero:
+          </p>
+          ${countdownBlockHtml()}
+          <div style="height:12px"></div>
+          <button class="ghost" id="f-another" style="width:100%">Preregister another account</button>
+        </div>`);
+      }
+
+      function expiredRedirectView() {
+        return authWrap(`<div class="card auth-card" style="text-align:center">
+          <h1>Beta is Live</h1>
+          <p class="muted">Preregistration has ended (October 10, 12:00 UTC). Redirecting to <b>uxaoro.fourtexec.site</b>…</p>
+          <div style="height:12px"></div>
+          <a href="${REDIRECT_URL}"><button type="button" style="width:100%">Open Uxaoro</button></a>
+        </div>`);
+      }
+
+      function authSettingsView() {
+        const backTarget = S.registeredUser ? "countdown" : "register";
+        return authWrap(`<div class="card auth-card">
+          <h1>Settings</h1>
+          ${lookPanel()}
+          <p class="tiny">Uxaoro v0.1.0</p>
+          <div style="height:12px"></div>
+          <button class="ghost" data-go="${backTarget}">${ico("back")}<span>Back</span></button>
+        </div>`);
+      }
+
+      let didRedirect = false;
+      function enforceReleaseCutoff() {
+        if (Date.now() >= BETA_OPEN_UTC) {
+          if (S.view !== "expired") {
+            S.view = "expired";
+            render();
+          }
+          if (!didRedirect) {
+            didRedirect = true;
+            try {
+              window.location.replace(REDIRECT_URL);
+            } catch (_) {
+              window.location.href = REDIRECT_URL;
+            }
+          }
+          return true;
+        }
+        return false;
+      }
+
+      function tickCountdownDom() {
+        if (enforceReleaseCutoff()) return;
+        const rLink = $("#f-resend");
+        if (rLink && S.pendingEmail) {
+          const waitSec = Math.max(0, Math.ceil((S.resendUntil - Date.now()) / 1000));
+          rLink.textContent = waitSec > 0 ? `Resend code (${waitSec}s)` : "Resend email code";
+        }
+        const d = $("#cd-d"), h = $("#cd-h"), m = $("#cd-m"), s = $("#cd-s");
+        if (!d || !h || !m || !s) return;
+        const c = countdownParts();
+        d.textContent = c.days;
+        h.textContent = c.hours;
+        m.textContent = c.mins;
+        s.textContent = c.secs;
+      }
+
+      function validateAge13(dob) {
+        if (!dob) throw new Error("Date of birth is required");
+        const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(dob);
+        if (!m) throw new Error("Enter date of birth in YYYY-MM-DD format");
+        const y = Number(m[1]), mo = Number(m[2]), dy = Number(m[3]);
+        const birth = new Date(Date.UTC(y, mo - 1, dy));
+        if (birth.getUTCFullYear() !== y || birth.getUTCMonth() !== mo - 1 || birth.getUTCDate() !== dy) {
+          throw new Error("Invalid date of birth");
+        }
+        const now = new Date();
+        let age = now.getUTCFullYear() - y;
+        const md = (now.getUTCMonth() + 1 - mo) * 100 + (now.getUTCDate() - dy);
+        if (md < 0) age -= 1;
+        if (isNaN(age) || age < 13) {
+          throw new Error("You must be at least 13 years old to register");
+        }
+      }
+
+      async function submitPrereg() {
+        if (enforceReleaseCutoff()) return;
+        if (S.authBusy) return;
+        snapshotDraft();
+        S.authBusy = true;
+        const err = $("#f-err");
+        const goBtn = $("#f-go");
+        if (err) err.textContent = "";
+        if (goBtn) goBtn.disabled = true;
+        try {
+          if (S.pendingEmail) {
+            const code = (($("#f-email-code") && $("#f-email-code").value) || "").trim();
+            if (!/^\d{6}$/.test(code)) {
+              throw new Error("Enter the 6-digit email verification code");
+            }
+            await api("/auth/register/verify", {
+              method: "POST",
+              body: { pending_token: S.pendingEmail, code },
+            });
+            setPendingEmail("", "");
+            S.emailInfo = "";
+            S.draft.code = "";
+            // Do NOT open the Uxaoro app — transition to the Beta release countdown view
+            S.view = "countdown";
+            render();
+            return;
+          }
+          const username = (($("#f-user") && $("#f-user").value) || "").trim();
+          const email = (($("#f-email") && $("#f-email").value) || "").trim();
+          const dob = (($("#f-dob") && $("#f-dob").value) || "").trim();
+          const password = ($("#f-pass") && $("#f-pass").value) || "";
+          validateAge13(dob);
+          if (S.verifyPromise) {
+            try { await S.verifyPromise; } catch (_) {}
+          }
+          if (!S.captchaPass && S.turnstileToken) {
+            await verifyTurnstileToken(S.turnstileToken);
+          }
+          if (!S.captchaPass && window.turnstile && S.turnstileWidgetId != null) {
+            try {
+              const respTok = window.turnstile.getResponse(S.turnstileWidgetId);
+              if (respTok) await verifyTurnstileToken(respTok);
+            } catch (_) {}
+          }
+          if (S.captchaEnabled && !S.captchaPass) {
+            throw new Error("Complete the CAPTCHA security check before continuing");
+          }
+          const reqBody = { username, email, password, display_name: username, dob };
+          if (S.captchaPass) reqBody.captcha_pass = S.captchaPass;
+          let pair;
+          try {
+            pair = await api("/auth/register", {
+              method: "POST",
+              body: reqBody,
+            });
+          } finally {
+            // A captcha_pass is single-use on the server; reset widget for next attempt if needed
+            S.captchaPass = "";
+            S.turnstileToken = "";
+            if (window.turnstile && S.turnstileWidgetId != null) {
+              try { window.turnstile.reset(S.turnstileWidgetId); } catch (_) {}
+            }
+          }
+          S.registeredUser = username;
+          try { localStorage.setItem("uxa_prereg_user", username); } catch (_) {}
+          if (pair && pair.requires_email && pair.pending_token) {
+            const targetEmail = pair.email || email;
+            setPendingEmail(pair.pending_token, targetEmail);
+            S.emailInfo = `✓ Verification code sent to ${targetEmail}`;
+            S.resendUntil = Date.now() + 45000;
+            render();
+            return;
+          }
+          // Registration complete: show countdown to October 10 12:00 UTC instead of entering app
+          S.view = "countdown";
+          render();
+        } catch (e) {
+          const msg = (e && e.message) || "Registration failed";
+          if (/captcha/i.test(msg)) {
+            S.captchaEnabled = true;
+            if (!S.captchaSiteKey) {
+              S.captchaChecked = false;
+              await loadCaptchaConfig();
+            }
+            render();
+          }
+          const errNow = $("#f-err");
+          if (errNow) errNow.textContent = msg;
+        } finally {
+          S.authBusy = false;
+          const b = $("#f-go");
+          if (b) b.disabled = false;
+        }
+      }
+
+      function render() {
+        const root = $("#root");
+        if (!root) return;
+        snapshotDraft();
+        if (Date.now() >= BETA_OPEN_UTC) {
+          S.view = "expired";
+        }
+        if (S.view === "expired") {
+          root.innerHTML = expiredRedirectView();
+        } else if (S.view === "authsettings") {
+          root.innerHTML = authSettingsView();
+        } else if (S.view === "countdown") {
+          root.innerHTML = countdownOnlyView();
+        } else {
+          root.innerHTML = preregFormView();
+          restoreDraft();
+          mountTurnstileWidget();
+        }
+
+        root.querySelectorAll("[data-go]").forEach((el) => {
+          el.onclick = (e) => {
+            e.preventDefault();
+            snapshotDraft();
+            S.view = el.getAttribute("data-go");
+            render();
+          };
+        });
+        bindLook(root);
+
+        const goBtn = $("#f-go");
+        if (goBtn) goBtn.onclick = (e) => { e.preventDefault(); submitPrereg(); };
+        const form = root.querySelector("form.auth-card");
+        if (form) form.onsubmit = (e) => { e.preventDefault(); submitPrereg(); };
+
+        const capPopup = $("#f-captcha-popup");
+        if (capPopup) capPopup.onclick = (e) => {
+          e.preventDefault();
+          snapshotDraft();
+          S.captchaState = "web-" + Math.random().toString(36).slice(2, 12);
+          const u = apiUrl("/auth/captcha?state=" + encodeURIComponent(S.captchaState) + "&mode=web");
+          const w = window.open(u, "uxaoro_captcha", "width=480,height=560");
+          if (!w) {
+            S.captchaFrameOpen = true;
+            render();
+          }
+        };
+        const capReset = $("#f-captcha-reset");
+        if (capReset) capReset.onclick = (e) => {
+          e.preventDefault();
+          snapshotDraft();
+          S.captchaPass = "";
+          render();
+        };
+
+        const backReg = $("#f-back-reg");
+        if (backReg) backReg.onclick = (e) => {
+          e.preventDefault();
+          setPendingEmail("", "");
+          S.emailInfo = "";
+          render();
+        };
+        const resend = $("#f-resend");
+        if (resend) resend.onclick = async (e) => {
+          e.preventDefault();
+          const box = $("#f-err");
+          const okBox = $("#f-ok");
+          if (Date.now() < S.resendUntil) {
+            const left = Math.ceil((S.resendUntil - Date.now()) / 1000);
+            if (box) box.textContent = `Please wait ${left}s before requesting another code`;
+            return;
+          }
+          if (box) box.textContent = "";
+          try {
+            const r = await api("/auth/register/resend", { method: "POST", body: { pending_token: S.pendingEmail } });
+            const addr = (r && r.email) || S.pendingEmailAddr || "your email";
+            S.emailInfo = `✓ A new 6-digit code was sent to ${addr}`;
+            S.resendUntil = Date.now() + 45000;
+            if (okBox) {
+              okBox.style.color = "#22C55E";
+              okBox.style.fontWeight = "600";
+              okBox.style.margin = "0 0 8px";
+              okBox.className = "tiny";
+              okBox.textContent = S.emailInfo;
+            }
+            tickCountdownDom();
+          } catch (err) {
+            if (box) box.textContent = err.message || "Could not resend verification email";
+          }
+        };
+        const another = $("#f-another");
+        if (another) another.onclick = (e) => {
+          e.preventDefault();
+          S.registeredUser = "";
+          S.draft = { user: "", email: "", dob: "", pass: "", code: "" };
+          try { localStorage.removeItem("uxa_prereg_user"); } catch (_) {}
+          S.view = "register";
+          render();
+        };
+      }
+
+      applyAppearance();
+      if (!enforceReleaseCutoff()) {
+        S.view = S.registeredUser ? "countdown" : "register";
+        render();
+        loadCaptchaConfig();
+      }
+      setInterval(tickCountdownDom, 1000);
+    })();
+  </script>
+</body>
+</html>

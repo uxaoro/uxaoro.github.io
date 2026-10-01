@@ -1,0 +1,334 @@
+UXAORO — TERMS OF USE
+
+Effective date: September 24, 2026
+Last updated:   September 24, 2026
+
+These Terms of Use ("Terms") are an agreement between you and fourtexec,
+the operator of Uxaoro ("Uxaoro", "we", "us"). They govern your use of the
+Uxaoro social network: the service at uxaoro.fourtexec.site and
+api.uxaoro.fourtexec.site, the Uxaoro web client, the Android app, the
+desktop apps for Windows, Linux and macOS, the Uxaoro Telegram bot and the
+"Login with Uxaoro" developer platform (together, the "Service").
+
+By tapping "Sign up" / "Create account", or by otherwise using the Service,
+you confirm that you have read and accept these Terms and our Privacy Policy
+(https://uxaoro.fourtexec.site/pp.txt). If you do not agree, do not create
+an account and do not use the Service.
+
+
+1. WHO MAY USE UXAORO
+
+1.1. You must be at least 13 years old to create an account. If you are
+     under the age of legal majority where you live, you may use Uxaoro only
+     with the permission of a parent or legal guardian, who accepts these
+     Terms on your behalf.
+1.2. You must be at least 18 years old (or the age of majority where you
+     live, if higher) to turn on "Show NSFW content", to mark your account
+     NSFW, or to post adult content.
+1.3. You may not use Uxaoro if we have previously banned you, or if using
+     the Service is prohibited for you by applicable law.
+
+
+2. YOUR ACCOUNT
+
+2.1. To register you provide a username, an email address and a password.
+     We may send a 6-digit code to your email to confirm it. Give us an
+     email address that you control and keep it up to date.
+2.2. One account is for one person. Do not share your login, sell, rent or
+     transfer your account, or create accounts to evade a ban.
+2.3. You are responsible for everything done through your account. Keep
+     your password secret; we strongly recommend two-factor authentication
+     (Settings -> Security). Tell us at support@fourtexec.site if you
+     believe your account was compromised.
+2.4. Usernames must not impersonate other people, brands or Uxaoro staff and
+     must not be offensive. We may reclaim or change a username that breaks
+     these rules or that is needed to resolve an impersonation claim.
+2.5. Staff roles (administrator, moderator) are assigned by Uxaoro. Staff can
+     see and act on reports, posts, accounts and the audit log as described
+     in the Privacy Policy.
+
+
+3. YOUR CONTENT
+
+3.1. "Content" means anything you post or send on Uxaoro: profile data,
+     avatars and covers, posts, reposts, comments, reactions, stories,
+     photos, videos, audio, stickers and sticker packs, community pages,
+     messages and files.
+3.2. You keep ownership of your Content. You grant Uxaoro a worldwide,
+     non-exclusive, royalty-free licence to host, store, copy, transmit,
+     display, format (for example resize or generate previews) and
+     distribute your Content, solely to operate, secure and improve the
+     Service and to show your Content to the audience you chose. This
+     includes automated analysis of public Content for moderation (see
+     Section 6). The licence ends when your Content is deleted from our
+     systems, except for Content that other users have already reshared
+     under the Service's features and copies that remain in backups for a
+     limited time.
+3.3. You confirm that you have all rights needed to post your Content and
+     that it does not violate these Terms, the law, or anyone else's rights
+     (including copyright, trademark, privacy and publicity rights).
+3.4. Visibility. Posts, comments, reactions, stories, profile information,
+     community pages and the files attached to them are public or visible
+     to other users according to your settings. Files you upload to posts,
+     stories, avatars and covers are served from a web address that anyone
+     who has the link can open. Do not post anything you want to keep
+     private — use end-to-end encrypted messages instead.
+3.5. Deleting a post, comment, story or message removes it from the Service
+     for other users. Some copies may remain for a limited time as described
+     in the Privacy Policy.
+
+
+4. RULES OF CONDUCT
+
+You agree not to use Uxaoro to:
+
+ a) post or share child sexual abuse material or any sexualised content
+    involving minors. We have zero tolerance: such content is removed, the
+    account is banned permanently, and we report it to the competent
+    authorities where the law requires or allows it;
+ b) post intimate or sexual images of a person without their consent, or
+    any sexual content depicting people who are not adults;
+ c) threaten, harass, bully, stalk, or incite violence against anyone;
+    promote terrorism or violent extremism;
+ d) attack or demean people on the basis of race, ethnicity, national
+    origin, religion, disability, sex, gender identity, sexual orientation
+    or similar characteristics;
+ e) publish another person's private information (address, phone number,
+    documents, private photos, etc.) without their consent ("doxxing");
+ f) impersonate any person or organisation, or misrepresent your
+    affiliation with them;
+ g) send spam, chain messages, unsolicited advertising, or run fake
+    engagement (fake accounts, bought likes, automated friend requests);
+ h) commit or promote fraud, scams, phishing, or the sale of illegal goods
+    or services;
+ i) upload viruses, malware or any harmful code, or links to them;
+ j) access, scrape or collect data from the Service by automated means
+    other than the official apps and the documented developer API, or
+    circumvent rate limits, bans, blocks, privacy settings or other
+    technical restrictions;
+ k) probe, scan or test the vulnerability of the Service, interfere with
+    its operation, or overload it. If you find a security issue, report it
+    to support@fourtexec.site instead of exploiting it;
+ l) infringe intellectual-property rights, or post content you are not
+    allowed to share;
+ m) break any law that applies to you or to us.
+
+
+5. ADULT (NSFW) CONTENT
+
+5.1. Uxaoro allows legal adult content only under these conditions: every
+     person depicted is an adult and has consented; the content is legal;
+     and the poster is at least 18.
+5.2. Adult content is hidden from everyone who has not turned on "Show NSFW
+     content" (off by default). If you regularly post adult content, mark
+     your account NSFW in Settings.
+5.3. Our automated moderator and our staff may mark posts and accounts as
+     NSFW. An account where, within 7 days, at least half of its posts (and
+     at least 4 posts) are NSFW is marked NSFW automatically and the mark is
+     locked, so only staff can remove it. The share of NSFW posts is shown
+     on the profile.
+
+
+6. MODERATION AND ENFORCEMENT
+
+6.1. You can report posts, users and other Content with the report tools in
+     the apps, or by writing to support@fourtexec.site. Reports are reviewed
+     by Uxaoro staff.
+6.2. Uxaoro runs an automated AI moderator that reviews new public posts
+     (text, attachment metadata and some photos) roughly once an hour and
+     flags adult content. It can make mistakes. It does not read your
+     end-to-end encrypted messages.
+6.3. If you break these Terms, or if we must do so to comply with the law or
+     to protect users or the Service, we may, with or without notice: remove
+     or hide Content; mark Content or accounts NSFW; limit features; revoke
+     developer projects and API keys; deduct UX obtained through a violation
+     or an error; suspend or permanently ban your account.
+6.4. If you believe we made a mistake, write to support@fourtexec.site from
+     the email address linked to your account. We review appeals in good
+     faith but are not obliged to restore Content or accounts.
+
+
+7. PRIVATE MESSAGES AND CALLS
+
+7.1. Chat messages and chat attachments are end-to-end encrypted on your
+     device. We cannot read them and we cannot recover them for you.
+7.2. Your private encryption key is stored only on your device (or in your
+     browser/desktop app storage). If you lose it — for example by
+     uninstalling the app, clearing browser data or changing devices without
+     exporting it in Settings — your old messages cannot be decrypted by
+     anyone, including us.
+7.3. Because we cannot see encrypted messages, we act on them only when a
+     participant reports them and shares their content with us.
+7.4. Audio and video calls connect you directly with the other person
+     (peer-to-peer WebRTC). Your IP address is therefore visible to the
+     person you call, and to the connectivity (STUN/TURN) servers used to
+     set up the call. Use the privacy setting "Who can call me" to limit
+     calls.
+
+
+8. UX DIGITAL CURRENCY
+
+8.1. UX is a virtual, in-app unit that can be used only inside Uxaoro (for
+     example to buy Uxaoro Premium or to gift other users). UX is not money,
+     electronic money, a cryptocurrency, a security or a deposit. It has no
+     value outside Uxaoro and cannot be withdrawn, cashed out, or exchanged
+     back into money or cryptocurrency, and we do not buy it back.
+8.2. You can obtain UX by buying it in the official Uxaoro Telegram bot
+     (paid in cryptocurrency through CryptoBot / Crypto Pay), by receiving
+     gifts from other users, or as rewards for activity (currently joining a
+     community for the first time and viewing a post). We may change or end
+     rewards, the price of UX and the things UX can be used for at any time.
+     The price shown in the bot at the time of purchase applies.
+8.3. Payments are processed by CryptoBot inside Telegram under their own
+     terms. We never receive your wallet keys or payment credentials.
+     Cryptocurrency payments are irreversible. Purchases of UX are final and
+     non-refundable, except where the law requires otherwise or where UX you
+     paid for was not credited because of our error — in that case contact
+     support@fourtexec.site with the invoice details and we will credit the
+     UX or refund the payment.
+8.4. Gifts of UX are instant and irreversible. Make sure you send them to the
+     right username.
+8.5. Your UX balance is visible to other users.
+8.6. We may correct balances that result from bugs, fraud, chargeback-like
+     abuse, or violations of these Terms, and administrators may grant or
+     deduct UX for these reasons. Every such change is recorded. UX left on
+     an account that is banned for violating these Terms is forfeited.
+
+
+9. UXAORO PREMIUM
+
+9.1. Uxaoro Premium is a time-limited status bought with UX (currently 30,
+     90 or 365 days; prices are shown in the app). It does not renew
+     automatically — buying again extends the current period.
+9.2. Premium currently includes, among other things: access to the
+     Developer tab, a higher daily story limit, a higher limit of owned
+     communities, and profile and chat customisation. We may change Premium
+     features; we will not reduce the core benefits of a period you have
+     already paid for without good reason, such as a legal or security need.
+9.3. Premium purchases are final and non-refundable except where the law
+     requires otherwise.
+
+
+10. DEVELOPER ACCOUNT AND "LOGIN WITH UXAORO"
+
+10.1. A Developer account requires Uxaoro Premium, a confirmed email address
+      and enabled two-factor authentication. Each project receives a client
+      ID and an API key.
+10.2. Keep your API keys secret. You are responsible for all use of your
+      projects and keys. Regenerate a key immediately if it leaks.
+10.3. Apps that use "Login with Uxaoro" receive only the public profile the
+      user approves (ID, username, display name, avatar). Your app must have
+      its own privacy policy, must use this data only to sign users in and to
+      provide your app, must not sell it, and must delete it when the user
+      asks or revokes access.
+10.4. Do not misrepresent your app, request access for deceptive purposes,
+      or use the API to break these Terms. We may revoke projects, keys and
+      tokens that do.
+
+
+11. APPS, UPDATES AND CUSTOM SERVERS
+
+11.1. Subject to these Terms, we grant you a personal, non-exclusive,
+      non-transferable, revocable licence to install and use the official
+      Uxaoro apps. You may not sell, sublicense or redistribute modified
+      versions of them, or reverse-engineer them except where the law
+      expressly allows it.
+11.2. The apps check https://fourtexec.site/downloads/uxaoro/upd/ for new
+      versions. An update is downloaded and installed only when you choose
+      to. On Android, installing an update requires allowing Uxaoro to
+      "install unknown apps". Download Uxaoro only from official sources.
+11.3. The apps let you point them at a different server (developer
+      settings). A server that is not operated by us is not the Service:
+      these Terms and our Privacy Policy do not apply to it and we are not
+      responsible for it.
+
+
+12. THIRD-PARTY SERVICES
+
+Some features rely on third parties, such as Telegram (the UX bot),
+CryptoBot (payments), our email delivery provider, our AI moderation
+provider and connectivity servers used for calls. Their own terms and
+privacy policies apply to your use of them. Links to external websites are
+provided for convenience; we are not responsible for their content.
+
+
+13. INTELLECTUAL PROPERTY
+
+The Uxaoro name, logo, design, software and all other parts of the Service
+other than user Content belong to fourtexec or its licensors. Nothing in
+these Terms transfers them to you. Feedback and suggestions you send us may
+be used freely without any obligation to you.
+
+
+14. AVAILABILITY AND CHANGES TO THE SERVICE
+
+Uxaoro is under active development. We may add, change or remove features,
+put the Service into maintenance, pause new registrations, or discontinue
+the Service. We will try to give reasonable notice of major changes that
+affect you, for example through an in-app message.
+
+
+15. DISCLAIMERS
+
+THE SERVICE IS PROVIDED "AS IS" AND "AS AVAILABLE". TO THE MAXIMUM EXTENT
+PERMITTED BY LAW, WE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. WE
+DO NOT GUARANTEE THAT THE SERVICE WILL BE UNINTERRUPTED, ERROR-FREE OR
+SECURE, THAT CONTENT WILL NOT BE LOST, OR THAT AUTOMATED MODERATION WILL BE
+ACCURATE. CONTENT POSTED BY USERS IS THEIR RESPONSIBILITY, NOT OURS.
+
+
+16. LIMITATION OF LIABILITY
+
+TO THE MAXIMUM EXTENT PERMITTED BY LAW, FOURTEXEC WILL NOT BE LIABLE FOR ANY
+INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL OR PUNITIVE DAMAGES, OR FOR
+LOSS OF DATA, PROFITS, GOODWILL OR UX, ARISING OUT OF OR RELATED TO YOUR USE
+OF THE SERVICE. OUR TOTAL LIABILITY FOR ANY CLAIM IS LIMITED TO THE GREATER
+OF (A) THE AMOUNT YOU PAID US FOR UX IN THE 12 MONTHS BEFORE THE CLAIM, OR
+(B) 50 US DOLLARS. NOTHING IN THESE TERMS LIMITS LIABILITY THAT CANNOT BE
+LIMITED BY LAW, OR YOUR MANDATORY RIGHTS AS A CONSUMER.
+
+
+17. INDEMNITY
+
+To the extent permitted by law, you agree to compensate fourtexec for
+claims, losses and reasonable costs (including legal fees) caused by your
+Content, your violation of these Terms, or your violation of anyone's
+rights.
+
+
+18. ENDING YOUR USE OF UXAORO
+
+18.1. You can stop using Uxaoro at any time. To delete your account, email
+      support@fourtexec.site from the address linked to it. We will delete
+      or anonymise your account and Content as described in the Privacy
+      Policy.
+18.2. We may suspend or terminate your access as described in Section 6.
+18.3. Sections 3.2 (for Content that remains), 8.1, 8.6, 13, 15, 16, 17 and
+      19 survive the end of this agreement.
+
+
+19. GOVERNING LAW AND DISPUTES
+
+These Terms are governed by the law of the place where fourtexec is
+established, without regard to its conflict-of-law rules. This does not
+deprive you of the protection of mandatory consumer-protection laws of the
+country where you live. Before starting any formal dispute, please contact
+us at support@fourtexec.site so we can try to resolve the issue informally.
+
+
+20. CHANGES TO THESE TERMS
+
+We may update these Terms. The current version is always available at
+https://uxaoro.fourtexec.site/tou.txt with its "Last updated" date. If a
+change materially affects your rights, we will notify you in the app or by
+email before it takes effect. If you keep using Uxaoro after the new Terms
+take effect, you accept them; if you do not agree, stop using the Service
+and ask us to delete your account.
+
+
+21. CONTACT
+
+fourtexec — operator of Uxaoro
+Email: support@fourtexec.site
+Web:   https://uxaoro.fourtexec.site

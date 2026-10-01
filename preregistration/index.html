@@ -269,9 +269,12 @@
       };
 
       const S = {
-        view: "register", // "register" | "countdown" | "authsettings" | "expired"
+        view: "register", // "register" | "login" | "countdown" | "authsettings" | "expired"
+        lastAuthView: "register",
         pendingEmail: sessionStorage.getItem("uxa_pe") || "",
         pendingEmailAddr: sessionStorage.getItem("uxa_pea") || "",
+        changingEmail: false,
+        pending2fa: "",
         registeredUser: localStorage.getItem("uxa_prereg_user") || "",
         authBusy: false,
         captchaChecked: false,
@@ -279,6 +282,10 @@
         captchaSiteKey: "0x4AAAAAAFKxa78Rd8MJNIC8",
         captchaWidgetUrl: "https://challenges.cloudflare.com/turnstile/v0/api.js",
         captchaPass: "",
+        captchaSolved: false,
+        rawTurnstileToken: "",
+        verifiedTurnstileToken: "",
+        verifyingTurnstileToken: "",
         turnstileToken: "",
         turnstileWidgetId: null,
         verifyPromise: null,
@@ -286,7 +293,7 @@
         captchaFrameOpen: false,
         emailInfo: "",
         resendUntil: 0,
-        draft: { user: "", email: "", dob: "", pass: "", code: "" },
+        draft: { user: "", email: "", dob: "", pass: "", login: "", code: "", newEmail: "", totpCode: "" },
       };
 
       function snapshotDraft() {
@@ -294,7 +301,10 @@
         const e = $("#f-email"); if (e) S.draft.email = e.value;
         const d = $("#f-dob"); if (d) S.draft.dob = d.value;
         const p = $("#f-pass"); if (p) S.draft.pass = p.value;
+        const l = $("#f-login"); if (l) S.draft.login = l.value;
         const c = $("#f-email-code"); if (c) S.draft.code = c.value;
+        const ne = $("#f-new-email"); if (ne) S.draft.newEmail = ne.value;
+        const tc = $("#f-totp-code"); if (tc) S.draft.totpCode = tc.value;
       }
 
       function restoreDraft() {
@@ -302,7 +312,10 @@
         const e = $("#f-email"); if (e && S.draft.email) e.value = S.draft.email;
         const d = $("#f-dob"); if (d && S.draft.dob) d.value = S.draft.dob;
         const p = $("#f-pass"); if (p && S.draft.pass) p.value = S.draft.pass;
+        const l = $("#f-login"); if (l && S.draft.login) l.value = S.draft.login;
         const c = $("#f-email-code"); if (c && S.draft.code) c.value = S.draft.code;
+        const ne = $("#f-new-email"); if (ne && (S.draft.newEmail || S.pendingEmailAddr)) ne.value = S.draft.newEmail || S.pendingEmailAddr;
+        const tc = $("#f-totp-code"); if (tc && S.draft.totpCode) tc.value = S.draft.totpCode;
       }
 
       window.addEventListener("message", (ev) => {
@@ -661,6 +674,19 @@
 
       function preregFormView() {
         if (S.pendingEmail) {
+          if (S.changingEmail) {
+            return authWrap(`<form class="card auth-card" onsubmit="return false">
+              <h1>Change email</h1>
+              <p class="muted">Enter a new email address to receive your 6-digit verification code without re-registering your account.</p>
+              <input id="f-new-email" placeholder="new email" type="email" autocomplete="email" required>
+              <div class="err" id="f-err"></div>
+              <div style="height:12px"></div>
+              <button type="submit" id="f-go">Update email &amp; send code</button>
+              <p class="tiny" style="margin-top:12px">
+                <a id="f-cancel-email" href="#">Cancel · Back to code verification</a>
+              </p>
+            </form>`);
+          }
           const waitSec = Math.max(0, Math.ceil((S.resendUntil - Date.now()) / 1000));
           return authWrap(`<form class="card auth-card" onsubmit="return false">
             <h1>Check your email</h1>
@@ -673,6 +699,37 @@
             <p class="tiny" style="margin-top:12px">
               <a id="f-resend" href="#">${waitSec > 0 ? `Resend code (${waitSec}s)` : "Resend email code"}</a>
               · <a id="f-back-reg" href="#">Change email</a>
+            </p>
+          </form>`);
+        }
+        if (S.view === "login") {
+          if (S.pending2fa) {
+            return authWrap(`<form class="card auth-card" onsubmit="return false">
+              <h1>Two-factor</h1>
+              <p class="muted">Enter the 6-digit code from your authenticator app.</p>
+              <input id="f-totp-code" placeholder="000000" maxlength="6" inputmode="numeric" autocomplete="one-time-code">
+              <div class="err" id="f-err"></div>
+              <div style="height:12px"></div>
+              <button type="submit" id="f-go">Verify</button>
+              <p class="tiny" style="margin-top:12px"><a id="f-back-2fa" href="#">Back to sign in</a></p>
+            </form>`);
+          }
+          return authWrap(`<form class="card auth-card" onsubmit="return false">
+            <div class="row spread" style="margin-bottom:4px">
+              <h1>Welcome back</h1>
+              <span class="chip on">Beta Preregistration</span>
+            </div>
+            <p class="muted">Sign in to check your reserved Uxaoro account before Beta opens on October 10, 12:00 UTC.</p>
+            <input id="f-login" placeholder="username or email" autocomplete="username" required>
+            <div style="height:8px"></div>
+            <input id="f-pass" placeholder="password" type="password" autocomplete="current-password" required>
+            ${captchaBlockHtml()}
+            <div class="err" id="f-err"></div>
+            <div style="height:12px"></div>
+            ${legalConsent("Sign in")}
+            <button type="submit" id="f-go">Sign in</button>
+            <p class="tiny" style="margin-top:12px">
+              No account? <a href="#" data-go="register">Create one</a>
             </p>
           </form>`);
         }
@@ -695,6 +752,9 @@
           <div style="height:12px"></div>
           ${legalConsent("Create account")}
           <button type="submit" id="f-go">Create account</button>
+          <p class="tiny" style="margin-top:12px">
+            Already have an account? <a href="#" data-go="login">Sign in</a>
+          </p>
         </form>`);
       }
 
@@ -710,7 +770,10 @@
           </p>
           ${countdownBlockHtml()}
           <div style="height:12px"></div>
-          <button class="ghost" id="f-another" style="width:100%">Preregister another account</button>
+          <div class="row" style="gap:8px">
+            <button class="ghost" id="f-another" style="flex:1">Preregister another account</button>
+            <button class="ghost" id="f-switch-login" style="flex:1">Sign in to another account</button>
+          </div>
         </div>`);
       }
 
@@ -724,7 +787,7 @@
       }
 
       function authSettingsView() {
-        const backTarget = S.registeredUser ? "countdown" : "register";
+        const backTarget = S.registeredUser ? "countdown" : (S.lastAuthView || "register");
         return authWrap(`<div class="card auth-card">
           <h1>Settings</h1>
           ${lookPanel()}
@@ -788,6 +851,27 @@
         }
       }
 
+      async function ensureCaptchaPassForSubmit() {
+        if (S.verifyPromise) {
+          try { await S.verifyPromise; } catch (_) {}
+        }
+        if (!S.captchaPass && S.turnstileToken) {
+          await verifyTurnstileToken(S.turnstileToken);
+        }
+        if (!S.captchaPass && window.turnstile && S.turnstileWidgetId != null) {
+          try {
+            const respTok = window.turnstile.getResponse(S.turnstileWidgetId);
+            if (respTok) await verifyTurnstileToken(respTok);
+          } catch (_) {}
+        }
+        if (S.captchaEnabled && !S.captchaPass && (S.captchaSolved || S.rawTurnstileToken)) {
+          S.captchaPass = await fetchServerCaptchaPass(S.rawTurnstileToken);
+        }
+        if (S.captchaEnabled && !S.captchaPass) {
+          throw new Error("Complete the CAPTCHA security check before continuing");
+        }
+      }
+
       async function submitPrereg() {
         if (enforceReleaseCutoff()) return;
         if (S.authBusy) return;
@@ -799,15 +883,52 @@
         if (goBtn) goBtn.disabled = true;
         try {
           if (S.pendingEmail) {
+            if (S.changingEmail) {
+              const newEmail = (($("#f-new-email") && $("#f-new-email").value) || "").trim().toLowerCase();
+              if (!newEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newEmail)) {
+                throw new Error("Enter a valid email address");
+              }
+              let r;
+              try {
+                r = await api("/auth/register/email", {
+                  method: "POST",
+                  body: { pending_token: S.pendingEmail, email: newEmail },
+                });
+              } catch (changeErr) {
+                if (changeErr && /(only registration|not found|404|405)/i.test(changeErr.message || "")) {
+                  r = await api("/auth/register/resend", {
+                    method: "POST",
+                    body: { pending_token: S.pendingEmail, email: newEmail },
+                  });
+                } else {
+                  throw changeErr;
+                }
+              }
+              const targetEmail = (r && r.email) || newEmail;
+              const nextPending = (r && r.pending_token) || S.pendingEmail;
+              setPendingEmail(nextPending, targetEmail);
+              S.changingEmail = false;
+              S.draft.email = targetEmail;
+              S.draft.newEmail = "";
+              S.emailInfo = `✓ Verification code sent to ${targetEmail}`;
+              S.resendUntil = Date.now() + 45000;
+              render();
+              return;
+            }
             const code = (($("#f-email-code") && $("#f-email-code").value) || "").trim();
             if (!/^\d{6}$/.test(code)) {
               throw new Error("Enter the 6-digit email verification code");
             }
-            await api("/auth/register/verify", {
+            const vRes = await api("/auth/register/verify", {
               method: "POST",
               body: { pending_token: S.pendingEmail, code },
             });
+            if (vRes && vRes.user && vRes.user.username) {
+              S.registeredUser = vRes.user.username;
+              try { localStorage.setItem("uxa_prereg_user", S.registeredUser); } catch (_) {}
+            }
             setPendingEmail("", "");
+            S.changingEmail = false;
             S.emailInfo = "";
             S.draft.code = "";
             // Do NOT open the Uxaoro app — transition to the Beta release countdown view
@@ -815,29 +936,85 @@
             render();
             return;
           }
+
+          if (S.view === "login") {
+            if (S.pending2fa) {
+              const code = (($("#f-totp-code") && $("#f-totp-code").value) || "").trim();
+              if (!/^\d{6}$/.test(code)) {
+                throw new Error("Enter the 6-digit authenticator code");
+              }
+              const pair = await api("/auth/login/2fa", {
+                method: "POST",
+                body: { pending_token: S.pending2fa, code },
+              });
+              S.pending2fa = "";
+              S.draft.totpCode = "";
+              S.registeredUser = (pair && pair.user && pair.user.username) || S.draft.login || S.registeredUser || "";
+              if (S.registeredUser) {
+                try { localStorage.setItem("uxa_prereg_user", S.registeredUser); } catch (_) {}
+              }
+              S.view = "countdown";
+              render();
+              return;
+            }
+            const loginId = (($("#f-login") && $("#f-login").value) || "").trim();
+            const password = ($("#f-pass") && $("#f-pass").value) || "";
+            if (!loginId || !password) {
+              throw new Error("Enter your username/email and password");
+            }
+            await ensureCaptchaPassForSubmit();
+            const loginBody = { login: loginId, password };
+            if (S.captchaPass) loginBody.captcha_pass = S.captchaPass;
+            let pair;
+            try {
+              pair = await api("/auth/login", {
+                method: "POST",
+                body: loginBody,
+              });
+            } catch (loginErr) {
+              if (loginErr && /captcha/i.test(loginErr.message || "") && (S.captchaSolved || S.rawTurnstileToken || S.captchaPass)) {
+                loginBody.captcha_pass = await fetchServerCaptchaPass(S.rawTurnstileToken);
+                pair = await api("/auth/login", {
+                  method: "POST",
+                  body: loginBody,
+                });
+              } else {
+                throw loginErr;
+              }
+            } finally {
+              S.captchaPass = "";
+              S.verifiedTurnstileToken = "";
+              S.turnstileToken = "";
+            }
+            S.captchaSolved = false;
+            S.rawTurnstileToken = "";
+            if (pair && pair.requires_2fa && pair.pending_token) {
+              S.pending2fa = pair.pending_token;
+              render();
+              return;
+            }
+            if (pair && pair.requires_email && pair.pending_token) {
+              const targetEmail = pair.email || loginId;
+              setPendingEmail(pair.pending_token, targetEmail);
+              S.changingEmail = false;
+              S.emailInfo = `✓ Verification code sent to ${targetEmail}`;
+              S.resendUntil = Date.now() + 45000;
+              render();
+              return;
+            }
+            S.registeredUser = (pair && pair.user && pair.user.username) || loginId;
+            try { localStorage.setItem("uxa_prereg_user", S.registeredUser); } catch (_) {}
+            S.view = "countdown";
+            render();
+            return;
+          }
+
           const username = (($("#f-user") && $("#f-user").value) || "").trim();
           const email = (($("#f-email") && $("#f-email").value) || "").trim();
           const dob = (($("#f-dob") && $("#f-dob").value) || "").trim();
           const password = ($("#f-pass") && $("#f-pass").value) || "";
           validateAge13(dob);
-          if (S.verifyPromise) {
-            try { await S.verifyPromise; } catch (_) {}
-          }
-          if (!S.captchaPass && S.turnstileToken) {
-            await verifyTurnstileToken(S.turnstileToken);
-          }
-          if (!S.captchaPass && window.turnstile && S.turnstileWidgetId != null) {
-            try {
-              const respTok = window.turnstile.getResponse(S.turnstileWidgetId);
-              if (respTok) await verifyTurnstileToken(respTok);
-            } catch (_) {}
-          }
-          if (S.captchaEnabled && !S.captchaPass && (S.captchaSolved || S.rawTurnstileToken)) {
-            S.captchaPass = await fetchServerCaptchaPass(S.rawTurnstileToken);
-          }
-          if (S.captchaEnabled && !S.captchaPass) {
-            throw new Error("Complete the CAPTCHA security check before continuing");
-          }
+          await ensureCaptchaPassForSubmit();
           const reqBody = { username, email, password, display_name: username, dob };
           if (S.captchaPass) reqBody.captcha_pass = S.captchaPass;
           let pair;
@@ -869,6 +1046,7 @@
           if (pair && pair.requires_email && pair.pending_token) {
             const targetEmail = pair.email || email;
             setPendingEmail(pair.pending_token, targetEmail);
+            S.changingEmail = false;
             S.emailInfo = `✓ Verification code sent to ${targetEmail}`;
             S.resendUntil = Date.now() + 45000;
             render();
@@ -878,7 +1056,7 @@
           S.view = "countdown";
           render();
         } catch (e) {
-          const msg = (e && e.message) || "Registration failed";
+          const msg = (e && e.message) || (S.view === "login" ? "Sign in failed" : "Registration failed");
           if (/captcha/i.test(msg) && !document.getElementById("cf-turnstile-box")) {
             S.captchaEnabled = true;
             if (!S.captchaSiteKey) {
@@ -903,6 +1081,9 @@
         if (Date.now() >= BETA_OPEN_UTC) {
           S.view = "expired";
         }
+        if (S.view === "register" || S.view === "login") {
+          S.lastAuthView = S.view;
+        }
         if (S.view === "expired") {
           root.innerHTML = expiredRedirectView();
         } else if (S.view === "authsettings") {
@@ -919,7 +1100,12 @@
           el.onclick = (e) => {
             e.preventDefault();
             snapshotDraft();
-            S.view = el.getAttribute("data-go");
+            const target = el.getAttribute("data-go");
+            if (target === "login" || target === "register") {
+              S.pending2fa = "";
+              S.changingEmail = false;
+            }
+            S.view = target;
             render();
           };
         });
@@ -947,14 +1133,32 @@
           e.preventDefault();
           snapshotDraft();
           S.captchaPass = "";
+          S.captchaSolved = false;
+          S.rawTurnstileToken = "";
           render();
         };
 
         const backReg = $("#f-back-reg");
         if (backReg) backReg.onclick = (e) => {
           e.preventDefault();
-          setPendingEmail("", "");
-          S.emailInfo = "";
+          snapshotDraft();
+          // Open email-only change form without clearing pendingEmail or re-registering
+          S.changingEmail = true;
+          S.draft.newEmail = S.pendingEmailAddr || S.draft.email || "";
+          render();
+        };
+        const cancelEmail = $("#f-cancel-email");
+        if (cancelEmail) cancelEmail.onclick = (e) => {
+          e.preventDefault();
+          snapshotDraft();
+          S.changingEmail = false;
+          render();
+        };
+        const back2fa = $("#f-back-2fa");
+        if (back2fa) back2fa.onclick = (e) => {
+          e.preventDefault();
+          S.pending2fa = "";
+          S.draft.totpCode = "";
           render();
         };
         const resend = $("#f-resend");
@@ -989,9 +1193,18 @@
         if (another) another.onclick = (e) => {
           e.preventDefault();
           S.registeredUser = "";
-          S.draft = { user: "", email: "", dob: "", pass: "", code: "" };
+          S.draft = { user: "", email: "", dob: "", pass: "", login: "", code: "", newEmail: "", totpCode: "" };
           try { localStorage.removeItem("uxa_prereg_user"); } catch (_) {}
           S.view = "register";
+          render();
+        };
+        const switchLogin = $("#f-switch-login");
+        if (switchLogin) switchLogin.onclick = (e) => {
+          e.preventDefault();
+          S.registeredUser = "";
+          S.draft = { user: "", email: "", dob: "", pass: "", login: "", code: "", newEmail: "", totpCode: "" };
+          try { localStorage.removeItem("uxa_prereg_user"); } catch (_) {}
+          S.view = "login";
           render();
         };
       }

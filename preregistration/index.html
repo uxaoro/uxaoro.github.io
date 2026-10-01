@@ -815,6 +815,38 @@
         }
       });
 
+      (async function checkPreregQueryOAuth() {
+        try {
+          const qs = new URLSearchParams(location.search || "");
+          const code = qs.get("code") || "";
+          const state = qs.get("state") || "";
+          if (!code || !state || !state.includes(".")) return;
+          const b64 = state.split(".")[0].replace(/-/g, "+").replace(/_/g, "/");
+          const pad = "=".repeat((4 - (b64.length % 4)) % 4);
+          const stObj = JSON.parse(decodeURIComponent(escape(atob(b64 + pad))));
+          const prov = stObj && stObj.p;
+          if (prov !== "google" && prov !== "github") return;
+          history.replaceState(null, "", location.pathname);
+          const pair = await api(`/auth/${prov}`, {
+            method: "POST",
+            body: { code, state, redirect_uri: (stObj && stObj.cb) || location.origin },
+          });
+          if (window.opener && !window.opener.closed) {
+            window.opener.postMessage({ type: "uxaoro-oauth-login", payload: pair }, "*");
+            setTimeout(() => window.close(), 150);
+            return;
+          }
+          const uname = (pair && pair.user && pair.user.username) || "user";
+          S.registeredUser = uname;
+          try { localStorage.setItem("uxa_prereg_user", uname); } catch (_) {}
+          S.view = "countdown";
+          render();
+        } catch (e) {
+          const errEl = $("#f-err");
+          if (errEl) errEl.textContent = (e && e.message) || "OAuth sign-in failed";
+        }
+      })();
+
       function countdownOnlyView() {
         return authWrap(`<div class="card auth-card">
           <div class="row spread" style="margin-bottom:6px">

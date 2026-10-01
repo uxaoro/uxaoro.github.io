@@ -276,6 +276,8 @@
         changingEmail: false,
         pending2fa: "",
         registeredUser: localStorage.getItem("uxa_prereg_user") || "",
+        token: localStorage.getItem("uxa_access") || "",
+        me: (() => { try { return JSON.parse(localStorage.getItem("uxa_c_me") || "null"); } catch (_) { return null; } })(),
         authBusy: false,
         captchaChecked: false,
         captchaEnabled: true,
@@ -510,6 +512,9 @@
       async function api(path, opts) {
         opts = opts || {};
         const headers = Object.assign({ "Content-Type": "application/json" }, opts.headers || {});
+        if (S.token && !headers.Authorization) {
+          headers.Authorization = "Bearer " + S.token;
+        }
         const res = await fetch(apiUrl(path), {
           method: opts.method || "GET",
           headers,
@@ -781,12 +786,32 @@
         `;
       }
 
-      async function startPreregOAuth(provider) {
-        const errEl = $("#f-err");
+      function savePreregSession(pair) {
+        if (!pair || typeof pair !== "object") return;
+        if (pair.access_token) {
+          S.token = pair.access_token;
+          try { localStorage.setItem("uxa_access", pair.access_token); } catch (_) {}
+        }
+        if (pair.refresh_token) {
+          try { localStorage.setItem("uxa_refresh", pair.refresh_token); } catch (_) {}
+        }
+        if (pair.user) {
+          S.me = pair.user;
+          try { localStorage.setItem("uxa_c_me", JSON.stringify(pair.user)); } catch (_) {}
+          if (pair.user.username) {
+            S.registeredUser = pair.user.username;
+            try { localStorage.setItem("uxa_prereg_user", S.registeredUser); } catch (_) {}
+          }
+        }
+      }
+
+      async function startPreregOAuth(provider, linkMode = false) {
+        const errEl = $("#f-err") || $("#cd-link-err");
         if (errEl) errEl.textContent = "";
         try {
           const returnUrl = location.origin + location.pathname;
-          const info = await api(`/auth/${provider}?format=json&redirect_to=${encodeURIComponent(returnUrl)}`);
+          const linkQs = (linkMode && S.token) ? `&mode=link&link_token=${encodeURIComponent(S.token)}` : "";
+          const info = await api(`/auth/${provider}?format=json&redirect_to=${encodeURIComponent(returnUrl)}${linkQs}`);
           if (!info || !info.url) throw new Error(`Could not start ${provider} sign-in`);
           const w = 520, h = 640;
           const left = Math.max(0, Math.round(window.screenX + (window.outerWidth - w) / 2));
@@ -799,17 +824,31 @@
         }
       }
 
+      async function unlinkPreregOAuth(provider) {
+        const errEl = $("#cd-link-err") || $("#f-err");
+        if (errEl) errEl.textContent = "";
+        try {
+          const res = await api("/auth/oauth/unlink", { method: "POST", body: { provider } });
+          if (res && res.user) {
+            S.me = res.user;
+            try { localStorage.setItem("uxa_c_me", JSON.stringify(res.user)); } catch (_) {}
+          }
+          render();
+        } catch (e) {
+          const msg = (e && e.message) || `Could not unlink ${provider}`;
+          if (errEl) errEl.textContent = msg;
+        }
+      }
+
       window.addEventListener("message", (ev) => {
         const d = ev && ev.data;
         if (d && typeof d === "object" && d.type === "uxaoro-oauth-login" && d.payload) {
           if (d.payload.error) {
-            const errEl = $("#f-err");
+            const errEl = $("#f-err") || $("#cd-link-err");
             if (errEl) errEl.textContent = String(d.payload.error);
             return;
           }
-          const uname = (d.payload.user && d.payload.user.username) || "user";
-          S.registeredUser = uname;
-          try { localStorage.setItem("uxa_prereg_user", uname); } catch (_) {}
+          savePreregSession(d.payload);
           S.view = "countdown";
           render();
         }
@@ -836,18 +875,34 @@
             setTimeout(() => window.close(), 150);
             return;
           }
-          const uname = (pair && pair.user && pair.user.username) || "user";
-          S.registeredUser = uname;
-          try { localStorage.setItem("uxa_prereg_user", uname); } catch (_) {}
+          savePreregSession(pair);
           S.view = "countdown";
           render();
         } catch (e) {
-          const errEl = $("#f-err");
+          const errEl = $("#f-err") || $("#cd-link-err");
           if (errEl) errEl.textContent = (e && e.message) || "OAuth sign-in failed";
         }
       })();
 
       function countdownOnlyView() {
+        const gLinked = !!(S.me && S.me.google_linked);
+        const ghLinked = !!(S.me && S.me.github_linked);
+        const linkSection = S.token ? `
+          <div style="margin-top:14px;padding:12px;border-radius:14px;background:var(--glass)">
+            <div class="tiny" style="color:var(--ink);margin-bottom:8px">
+              <b>Linked accounts</b> — link Google or GitHub to sign in with either your password, Google, or GitHub:
+            </div>
+            <div class="row" style="gap:8px">
+              <button type="button" class="ghost" id="btn-cd-link-google" style="flex:1;padding:8px 10px;font-size:12px">
+                ${GOOGLE_SVG}<span>${gLinked ? "Google linked ✓ (Unlink)" : "Link Google"}</span>
+              </button>
+              <button type="button" class="ghost" id="btn-cd-link-github" style="flex:1;padding:8px 10px;font-size:12px">
+                ${GITHUB_SVG}<span>${ghLinked ? "GitHub linked ✓ (Unlink)" : "Link GitHub"}</span>
+              </button>
+            </div>
+            <div class="err" id="cd-link-err" style="margin-top:4px"></div>
+          </div>
+        ` : "";
         return authWrap(`<div class="card auth-card">
           <div class="row spread" style="margin-bottom:6px">
             <h1>You're in!</h1>
@@ -858,6 +913,7 @@
             The Uxaoro app will unlock when the Beta release countdown reaches zero:
           </p>
           ${countdownBlockHtml()}
+          ${linkSection}
           <div style="height:12px"></div>
           <div class="row" style="gap:8px">
             <button class="ghost" id="f-another" style="flex:1">Preregister another account</button>
@@ -1012,10 +1068,7 @@
               method: "POST",
               body: { pending_token: S.pendingEmail, code },
             });
-            if (vRes && vRes.user && vRes.user.username) {
-              S.registeredUser = vRes.user.username;
-              try { localStorage.setItem("uxa_prereg_user", S.registeredUser); } catch (_) {}
-            }
+            savePreregSession(vRes);
             setPendingEmail("", "");
             S.changingEmail = false;
             S.emailInfo = "";
@@ -1038,6 +1091,7 @@
               });
               S.pending2fa = "";
               S.draft.totpCode = "";
+              savePreregSession(pair);
               S.registeredUser = (pair && pair.user && pair.user.username) || S.draft.login || S.registeredUser || "";
               if (S.registeredUser) {
                 try { localStorage.setItem("uxa_prereg_user", S.registeredUser); } catch (_) {}
@@ -1091,6 +1145,7 @@
               render();
               return;
             }
+            savePreregSession(pair);
             S.registeredUser = (pair && pair.user && pair.user.username) || loginId;
             try { localStorage.setItem("uxa_prereg_user", S.registeredUser); } catch (_) {}
             S.view = "countdown";
@@ -1130,6 +1185,7 @@
           }
           S.captchaSolved = false;
           S.rawTurnstileToken = "";
+          savePreregSession(pair);
           S.registeredUser = username;
           try { localStorage.setItem("uxa_prereg_user", username); } catch (_) {}
           if (pair && pair.requires_email && pair.pending_token) {
@@ -1205,9 +1261,21 @@
         const form = root.querySelector("form.auth-card");
         if (form) form.onsubmit = (e) => { e.preventDefault(); submitPrereg(); };
         const gBtn = $("#btn-oauth-google");
-        if (gBtn) gBtn.onclick = (e) => { e.preventDefault(); startPreregOAuth("google"); };
+        if (gBtn) gBtn.onclick = (e) => { e.preventDefault(); startPreregOAuth("google", false); };
         const ghBtn = $("#btn-oauth-github");
-        if (ghBtn) ghBtn.onclick = (e) => { e.preventDefault(); startPreregOAuth("github"); };
+        if (ghBtn) ghBtn.onclick = (e) => { e.preventDefault(); startPreregOAuth("github", false); };
+        const cdLinkGoogle = $("#btn-cd-link-google");
+        if (cdLinkGoogle) cdLinkGoogle.onclick = (e) => {
+          e.preventDefault();
+          if (S.me && S.me.google_linked) unlinkPreregOAuth("google");
+          else startPreregOAuth("google", true);
+        };
+        const cdLinkGithub = $("#btn-cd-link-github");
+        if (cdLinkGithub) cdLinkGithub.onclick = (e) => {
+          e.preventDefault();
+          if (S.me && S.me.github_linked) unlinkPreregOAuth("github");
+          else startPreregOAuth("github", true);
+        };
 
         const capPopup = $("#f-captcha-popup");
         if (capPopup) capPopup.onclick = (e) => {
@@ -1286,8 +1354,15 @@
         if (another) another.onclick = (e) => {
           e.preventDefault();
           S.registeredUser = "";
+          S.token = "";
+          S.me = null;
           S.draft = { user: "", email: "", dob: "", pass: "", login: "", code: "", newEmail: "", totpCode: "" };
-          try { localStorage.removeItem("uxa_prereg_user"); } catch (_) {}
+          try {
+            localStorage.removeItem("uxa_prereg_user");
+            localStorage.removeItem("uxa_access");
+            localStorage.removeItem("uxa_refresh");
+            localStorage.removeItem("uxa_c_me");
+          } catch (_) {}
           S.view = "register";
           render();
         };
@@ -1295,8 +1370,15 @@
         if (switchLogin) switchLogin.onclick = (e) => {
           e.preventDefault();
           S.registeredUser = "";
+          S.token = "";
+          S.me = null;
           S.draft = { user: "", email: "", dob: "", pass: "", login: "", code: "", newEmail: "", totpCode: "" };
-          try { localStorage.removeItem("uxa_prereg_user"); } catch (_) {}
+          try {
+            localStorage.removeItem("uxa_prereg_user");
+            localStorage.removeItem("uxa_access");
+            localStorage.removeItem("uxa_refresh");
+            localStorage.removeItem("uxa_c_me");
+          } catch (_) {}
           S.view = "login";
           render();
         };

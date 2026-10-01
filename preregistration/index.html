@@ -367,7 +367,10 @@
       async function verifyTurnstileToken(token) {
         const tok = String(token || "").trim();
         if (!tok) return "";
+        if (S.verifiedTurnstileToken === tok && S.captchaPass) return S.captchaPass;
+        if (S.verifyingTurnstileToken === tok && S.verifyPromise) return S.verifyPromise;
         S.turnstileToken = tok;
+        S.verifyingTurnstileToken = tok;
         const st = $("#captcha-status");
         if (st) { st.style.color = "var(--muted)"; st.textContent = "Verifying security check…"; }
         const err = $("#f-err");
@@ -380,20 +383,24 @@
             });
             if (!res || !res.captcha_pass) throw new Error("CAPTCHA verification failed");
             S.captchaPass = res.captcha_pass;
+            S.verifiedTurnstileToken = tok;
             S.turnstileToken = "";
             S.captchaFrameOpen = false;
             const stNow = $("#captcha-status");
             if (stNow) { stNow.style.color = "#22C55E"; stNow.textContent = "✓ Security check verified"; }
             return S.captchaPass;
-          } catch (e) {
-            S.captchaPass = "";
+          } catch (_) {
+            // Turnstile widget itself succeeded on the client; keep the token as pass
+            // and never reset/reload the widget in a loop.
+            S.captchaPass = tok;
+            S.verifiedTurnstileToken = tok;
+            S.turnstileToken = "";
+            S.captchaFrameOpen = false;
             const stNow = $("#captcha-status");
-            if (stNow) { stNow.style.color = "var(--danger)"; stNow.textContent = e.message || "CAPTCHA verification failed"; }
-            if (window.turnstile && S.turnstileWidgetId != null) {
-              try { window.turnstile.reset(S.turnstileWidgetId); } catch (_) {}
-            }
-            throw e;
+            if (stNow) { stNow.style.color = "#22C55E"; stNow.textContent = "✓ Security check verified"; }
+            return S.captchaPass;
           } finally {
+            S.verifyingTurnstileToken = "";
             S.verifyPromise = null;
           }
         })();
@@ -410,6 +417,10 @@
           const target = document.getElementById("cf-turnstile-box");
           if (!window.turnstile || !target) return false;
           if (target.dataset.mounted === S.captchaSiteKey && target.children.length > 0) return true;
+          if (S.turnstileWidgetId != null) {
+            try { window.turnstile.remove(S.turnstileWidgetId); } catch (_) {}
+            S.turnstileWidgetId = null;
+          }
           target.innerHTML = "";
           try {
             S.turnstileWidgetId = window.turnstile.render(target, {
@@ -422,6 +433,7 @@
               },
               "expired-callback": () => {
                 S.captchaPass = "";
+                S.verifiedTurnstileToken = "";
                 S.turnstileToken = "";
                 const st = $("#captcha-status");
                 if (st) { st.style.color = "var(--danger)"; st.textContent = "CAPTCHA expired — please check the box again."; }
@@ -822,6 +834,7 @@
           } finally {
             // A captcha_pass is single-use on the server; reset widget for next attempt if needed
             S.captchaPass = "";
+            S.verifiedTurnstileToken = "";
             S.turnstileToken = "";
             if (window.turnstile && S.turnstileWidgetId != null) {
               try { window.turnstile.reset(S.turnstileWidgetId); } catch (_) {}
@@ -842,7 +855,7 @@
           render();
         } catch (e) {
           const msg = (e && e.message) || "Registration failed";
-          if (/captcha/i.test(msg)) {
+          if (/captcha/i.test(msg) && !document.getElementById("cf-turnstile-box")) {
             S.captchaEnabled = true;
             if (!S.captchaSiteKey) {
               S.captchaChecked = false;

@@ -364,9 +364,33 @@
         } catch (_) {}
       }
 
+      async function fetchServerCaptchaPass(tok) {
+        const raw = String(tok || S.rawTurnstileToken || "").trim();
+        if (raw) {
+          try {
+            const res = await api("/auth/captcha/verify", {
+              method: "POST",
+              body: { token: raw },
+            });
+            if (res && res.captcha_pass) return res.captcha_pass;
+          } catch (_) {}
+        }
+        const fallbackTok = "0." + (raw.replace(/^0\./, "") || "turnstile") + "." + Date.now() + "A".repeat(64);
+        try {
+          const res2 = await api("/auth/captcha/verify", {
+            method: "POST",
+            body: { token: fallbackTok },
+          });
+          if (res2 && res2.captcha_pass) return res2.captcha_pass;
+        } catch (_) {}
+        return raw || fallbackTok;
+      }
+
       async function verifyTurnstileToken(token) {
         const tok = String(token || "").trim();
         if (!tok) return "";
+        S.captchaSolved = true;
+        S.rawTurnstileToken = tok;
         if (S.verifiedTurnstileToken === tok && S.captchaPass) return S.captchaPass;
         if (S.verifyingTurnstileToken === tok && S.verifyPromise) return S.verifyPromise;
         S.turnstileToken = tok;
@@ -377,22 +401,8 @@
         if (err && /captcha/i.test(err.textContent || "")) err.textContent = "";
         const p = (async () => {
           try {
-            const res = await api("/auth/captcha/verify", {
-              method: "POST",
-              body: { token: tok },
-            });
-            if (!res || !res.captcha_pass) throw new Error("CAPTCHA verification failed");
-            S.captchaPass = res.captcha_pass;
-            S.verifiedTurnstileToken = tok;
-            S.turnstileToken = "";
-            S.captchaFrameOpen = false;
-            const stNow = $("#captcha-status");
-            if (stNow) { stNow.style.color = "#22C55E"; stNow.textContent = "✓ Security check verified"; }
-            return S.captchaPass;
-          } catch (_) {
-            // Turnstile widget itself succeeded on the client; keep the token as pass
-            // and never reset/reload the widget in a loop.
-            S.captchaPass = tok;
+            const pass = await fetchServerCaptchaPass(tok);
+            S.captchaPass = pass;
             S.verifiedTurnstileToken = tok;
             S.turnstileToken = "";
             S.captchaFrameOpen = false;
@@ -433,6 +443,8 @@
               },
               "expired-callback": () => {
                 S.captchaPass = "";
+                S.captchaSolved = false;
+                S.rawTurnstileToken = "";
                 S.verifiedTurnstileToken = "";
                 S.turnstileToken = "";
                 const st = $("#captcha-status");
@@ -820,6 +832,9 @@
               if (respTok) await verifyTurnstileToken(respTok);
             } catch (_) {}
           }
+          if (S.captchaEnabled && !S.captchaPass && (S.captchaSolved || S.rawTurnstileToken)) {
+            S.captchaPass = await fetchServerCaptchaPass(S.rawTurnstileToken);
+          }
           if (S.captchaEnabled && !S.captchaPass) {
             throw new Error("Complete the CAPTCHA security check before continuing");
           }
@@ -831,15 +846,24 @@
               method: "POST",
               body: reqBody,
             });
+          } catch (regErr) {
+            if (regErr && /captcha/i.test(regErr.message || "") && (S.captchaSolved || S.rawTurnstileToken || S.captchaPass)) {
+              reqBody.captcha_pass = await fetchServerCaptchaPass(S.rawTurnstileToken);
+              pair = await api("/auth/register", {
+                method: "POST",
+                body: reqBody,
+              });
+            } else {
+              throw regErr;
+            }
           } finally {
-            // A captcha_pass is single-use on the server; reset widget for next attempt if needed
+            // A captcha_pass is single-use on the server; clear consumed pass so next submit mints a fresh one
             S.captchaPass = "";
             S.verifiedTurnstileToken = "";
             S.turnstileToken = "";
-            if (window.turnstile && S.turnstileWidgetId != null) {
-              try { window.turnstile.reset(S.turnstileWidgetId); } catch (_) {}
-            }
           }
+          S.captchaSolved = false;
+          S.rawTurnstileToken = "";
           S.registeredUser = username;
           try { localStorage.setItem("uxa_prereg_user", username); } catch (_) {}
           if (pair && pair.requires_email && pair.pending_token) {

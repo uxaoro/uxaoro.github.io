@@ -8,7 +8,7 @@ app:
   status_label: Beta is live now
 
 # Latest released version. Shown on the page and in the download labels.
-version: 1.0.0-beta.1
+version: 0.1.0
 release_date: 2026-10-10
 
 branding:

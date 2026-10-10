@@ -246,12 +246,12 @@
     <img class="logo-hero logo-light" src="https://uxaoro.fourtexec.site/logo.png" alt="Uxaoro logo">
     <img class="logo-hero logo-dark" src="https://uxaoro.fourtexec.site/dlogo.png" alt="Uxaoro logo">
     <h1>Uxaoro</h1>
-    <span class="badge"><span class="dot"></span> Beta is live now · v1.0.0-beta.1</span>
+    <span class="badge"><span class="dot"></span> Beta is live now · <span class="app-version-label">v1.0.0-beta.1</span></span>
     <p class="lead" style="margin-top:18px">A social network built for real connection. Share moments, chat securely, and stay close to the people who matter, across every device.</p>
     <div class="cta" id="download">
-      <a class="btn btn-primary" href="https://fourtexec.site/downloads/uxaoro/android/uxaoro-1.0.0-beta.1.apk" download>
+      <a class="btn btn-primary js-apk-link" href="https://fourtexec.site/downloads/uxaoro/android/uxaoro-1.0.0-beta.1.apk" download>
         <svg class="ic"><use href="#i-download"/></svg>
-        <span>Download for Android (APK)<small>Version 1.0.0-beta.1 · Android 8.0+</small></span>
+        <span>Download for Android (APK)<small>Version <span class="app-version-label">1.0.0-beta.1</span> · Android 8.0+</small></span>
       </a>
       <a class="btn btn-glass" href="https://web.uxaoro.fourtexec.site" target="_blank" rel="noopener">
         <svg class="ic"><use href="#i-globe"/></svg>
@@ -288,7 +288,7 @@
         <span class="tag"><svg class="ic-sm"><use href="#i-android"/></svg> Android · APK</span>
         <h3>Android app</h3>
         <p>Native Kotlin / Jetpack Compose app with liquid glass UI, E2EE, calls, stories and the full social experience.</p>
-        <a class="btn btn-primary" href="https://fourtexec.site/downloads/uxaoro/android/uxaoro-1.0.0-beta.1.apk" download><svg class="ic"><use href="#i-download"/></svg> Download APK</a>
+        <a class="btn btn-primary js-apk-link" href="https://fourtexec.site/downloads/uxaoro/android/uxaoro-1.0.0-beta.1.apk" download><svg class="ic"><use href="#i-download"/></svg> Download APK</a>
       </div>
       <div class="card">
         <span class="tag"><svg class="ic-sm"><use href="#i-globe"/></svg> Web</span>
@@ -305,7 +305,7 @@
     <h2>Install on Android</h2>
     <p class="sub">The APK is installed directly, outside the Play Store, during the beta.</p>
     <ol class="steps">
-      <li><strong>Download the APK</strong> with the button above (version 1.0.0-beta.1).</li>
+      <li><strong>Download the APK</strong> with the button above (version <span class="app-version-label">1.0.0-beta.1</span>).</li>
       <li><strong>Allow installs from this source</strong> when Android asks. Open Settings, then Apps or Install unknown apps, and allow your browser or file manager.</li>
       <li><strong>Open the APK file</strong> from your Downloads folder and tap Install.</li>
       <li><strong>Sign in or register</strong> and start testing. Download the newest APK from this page when a new version is posted.</li>
@@ -329,7 +329,7 @@
 
 <footer>
   <div class="wrap foot">
-    <div>© Uxaoro · built by fourtexec · v1.0.0-beta.1</div>
+    <div>© Uxaoro · built by fourtexec · <span class="app-version-label">v1.0.0-beta.1</span></div>
     <div class="foot-links">
       <a href="https://github.com/fourtexec/uxaoro" target="_blank" rel="noopener"><svg class="ic-sm"><use href="#i-github"/></svg> GitHub</a>
       <a href="https://t.me/fourtexec" target="_blank" rel="noopener"><svg class="ic-sm"><use href="#i-telegram"/></svg> Telegram</a>
@@ -340,6 +340,28 @@
 </footer>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  /* =========================================================
+     APP VERSION — change here and everywhere updates at once.
+     APK URL becomes: https://fourtexec.site/downloads/uxaoro/android/uxaoro-<APP_VERSION>.apk
+     ========================================================= */
+  var APP_VERSION = "0.1.0";
+  var APK_BASE = "https://fourtexec.site/downloads/uxaoro/android/uxaoro-";
+
+  (function () {
+    // 1) Rewrite every APK download link
+    var apkUrl = APK_BASE + APP_VERSION + ".apk";
+    document.querySelectorAll(".js-apk-link").forEach(function (a) {
+      a.setAttribute("href", apkUrl);
+    });
+
+    // 2) Update every visible version label
+    document.querySelectorAll(".app-version-label").forEach(function (el) {
+      var txt = el.textContent.trim();
+      // Keep a leading "v" if the original label had one (badge/footer), otherwise plain version
+      el.textContent = /^v/i.test(txt) ? "v" + APP_VERSION : APP_VERSION;
+    });
+  })();
+
   (function () {
     var root = document.documentElement;
     var saved = null;

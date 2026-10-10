@@ -1,0 +1,35 @@
+# Uxaoro beta-test site configuration.
+# After editing this file, regenerate the page:   python3 build.py
+
+app:
+  name: Uxaoro
+  tagline: A social network built for real connection. Share moments, chat securely, and stay close to the people who matter, across every device.
+  mode: beta-test
+  status_label: Beta is live now
+
+# Latest released version. Shown on the page and in the download labels.
+version: 1.0.0-beta.1
+release_date: 2026-10-10
+
+branding:
+  logo_light: https://uxaoro.fourtexec.site/logo.png    # used on the white theme
+  logo_dark: https://uxaoro.fourtexec.site/dlogo.png    # used on the black theme
+
+downloads:
+  # Every download URL is built as: base_url + "/" + file
+  base_url: https://fourtexec.site/downloads/uxaoro
+  android:
+    file: android/uxaoro-version.apk
+    min_android: "8.0"        # informational, shown on the page
+    label: Download for Android (APK)
+
+web:
+  # Web app opened in the browser (no install needed)
+  url: https://web.uxaoro.fourtexec.site
+  label: Open web app
+
+links:
+  support_email: support@fourtexec.site
+  github: https://github.com/fourtexec/uxaoro
+  telegram: https://t.me/fourtexec
+  youtube: https://youtube.com/@FourTExec
